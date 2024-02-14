@@ -1,0 +1,19 @@
+
+---
+import SectionHeader from "./SectionHeader.astro";
+import ProjectCard from "./ProjectCard.astro";
+import type { CollectionEntry } from "astro:content";
+import { getCollection } from "astro:content"
+
+// Get array of experience objects from content/experience/ .yaml files
+const projectEntries : CollectionEntry<"projects">[] = await getCollection("projects", ({data}) => {
+  return data.showOnFrontpage == true
+});
+
+---
+
+<SectionHeader title="Projekter" id="projects"/>
+{projectEntries.map((entry) => (
+  <ProjectCard project={entry}/>
+))}
+
