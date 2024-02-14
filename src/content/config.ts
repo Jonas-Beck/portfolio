@@ -13,4 +13,19 @@ const experience = defineCollection({
     }),
 })
 
-export const collections = { experience }
+const projects = defineCollection({
+    type: "content",
+    schema: z.object({
+        title: z.string(),
+        githubLink: z.string(),
+        showOnFrontpage: z.boolean(),
+        demoLink: z.string().optional(),
+        image: z.object({
+            src: z.string(),
+            alt: z.string(),
+        }).optional(),
+        tags: z.array(z.string()),
+    }),
+})
+
+export const collections = { experience, projects }
