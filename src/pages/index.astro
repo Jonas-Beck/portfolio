@@ -3,12 +3,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Timeline from "../components/Timeline.astro";
 import About from "../components/About.astro";
 import ProjectsGroup from "../components/ProjectsGroup.astro";
+import Navigation from "../components/Navigation.astro";
+import Intro from "../components/Intro.astro";
+import Socials from "../components/Socials.astro";
 ---
 
-<BaseLayout title="Welcome to Astro.">
+<BaseLayout title="JonasBeck">
   <aside class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/2 lg:flex-col lg:py-24">
-    <h1 class="text-5xl font-extrabold pb-2">Jonas Beck</h1>
-    <h2 class="text-2xl"> Full-stack Udvikler</h2>
+    <Intro/>
+    <Navigation/>
+    <Socials/>
   </aside>
 	<main class="pt-24 lg:w-1/2 lg:py-24">
     <About/>
