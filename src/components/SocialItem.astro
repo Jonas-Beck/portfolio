@@ -9,9 +9,10 @@ interface Props {
 const { social } = Astro.props
 const { name, link, icon } = social.data
 ---
-<a href={link} target="_blank" class="inline-flex gap-2 items-center hover:underline text-white">
+<a href={link} target="_blank" class="inline-flex gap-2 items-center hover:underline text-white group">
     <Icon name={icon} size={20}/>
     <p>{name}</p>
+    <Icon name="external-link" class="hidden group-hover:block" size={15} />
 </a>
 
 
