@@ -1,5 +1,17 @@
 ---
+import { type CollectionEntry, getCollection } from "astro:content";
+import SocialItem from "./SocialItem.astro"
+
+
+// Get array of experience objects from content/experience/ .yaml files
+const socialEntries : CollectionEntry<"socials">[] = await getCollection("socials");
+
 
 ---
-<div>
+<div class="mt-16 flex flex-col">
+  {socialEntries
+    // Map all entries and return a socialItem for each item
+    .map((entry) => (
+    <SocialItem social={entry} />
+  ))}
 </div>

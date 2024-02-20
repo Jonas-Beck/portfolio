@@ -1,0 +1,21 @@
+---
+import type { CollectionEntry } from "astro:content"
+import { Icon } from "astro-icon/components"
+
+interface Props {
+    social: CollectionEntry<"socials">
+}
+
+const { social } = Astro.props
+const { name, link, icon } = social.data
+---
+<a href={link} target="_blank" class="inline-flex gap-2 items-center hover:underline text-white">
+    <Icon name={icon} size={20}/>
+    <p>{name}</p>
+</a>
+
+
+
+
+
+

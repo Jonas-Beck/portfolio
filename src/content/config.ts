@@ -10,22 +10,29 @@ const experience = defineCollection({
         desc: z.string(),
         startDate: z.coerce.date(),
         endDate: z.coerce.date().optional(),
+        type: z.enum(["work", "school", "certificate"])
     }),
 })
 
-const projects = defineCollection({
+const projects = defineCollection({ 
     type: "content",
     schema: z.object({
         title: z.string(),
         githubLink: z.string(),
         showOnFrontpage: z.boolean(),
-        demoLink: z.string().optional(),
-        image: z.object({
-            src: z.string(),
-            alt: z.string(),
-        }).optional(),
+        date: z.coerce.date(),
         tags: z.array(z.string()),
     }),
 })
 
-export const collections = { experience, projects }
+
+const socials = defineCollection({
+    type: "data",
+    schema: z.object({
+        link: z.string(),
+        name: z.string(),
+        icon: z.string(),
+    }),
+})
+
+export const collections = { experience, projects, socials }
