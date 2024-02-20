@@ -2,9 +2,9 @@
 title: "Portfolio"
 githubLink: "https://github.com/Jonas-Beck/Portfolio"
 showOnFrontpage: true
-date: 2024-02-24
+date: 2024-02-19
 tags:
-    - Astro
+    - Astro.js
     - Tailwind CSS
     - TypeScript
 ---

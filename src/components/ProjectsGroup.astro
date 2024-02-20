@@ -1,19 +1,22 @@
-
 ---
-import SectionHeader from "./SectionHeader.astro";
-import ProjectCard from "./ProjectCard.astro";
-import type { CollectionEntry } from "astro:content";
+import SectionHeader from "./SectionHeader.astro"
+import ProjectCard from "./ProjectCard.astro"
+import type { CollectionEntry } from "astro:content"
 import { getCollection } from "astro:content"
 
 // Get array of experience objects from content/experience/ .yaml files
-const projectEntries : CollectionEntry<"projects">[] = await getCollection("projects", ({data}) => {
-  return data.showOnFrontpage == true
-});
-
+const projectEntries: CollectionEntry<"projects">[] = await getCollection("projects", ({ data }) => {
+    return data.showOnFrontpage == true
+})
 ---
 
-<SectionHeader title="Projekter" id="projects"/>
-{projectEntries.map((entry) => (
-  <ProjectCard project={entry}/>
-))}
-
+<SectionHeader title="Projekter" id="projects" />
+{
+    projectEntries
+        .slice() // Create shallow copy to avoid modifying original array
+        // Sort all entries based on startDate in descending order
+        .sort((a, b) => {
+            return b.data.date.getTime() - a.data.date.getTime()
+        })
+        .map((entry) => <ProjectCard project={entry} />)
+}

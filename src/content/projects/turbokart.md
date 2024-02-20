@@ -2,14 +2,16 @@
 title: "TurboKart"
 githubLink: "https://github.com/Jonas-Beck/TurboKart"
 showOnFrontpage: true
-date: 2024-02-11
+date: 2024-02-02
 tags:
 - C#
-- CLEAN Architecture
-- Unit of Work
-- Dependency Injection
+- gRPC
+- SignalR
+- Blazor WASM
+- Razor Pages
+- EF Core
+- REST API
 ---
 
-TurboKart is a project developed using the CLEAN Architecture, incorporating key design patterns such as Unit of Work (UoW), Repositories, Dependency Injection (DI), and Inversion of Control (IoC). This project contains 3 different websites:
-
+lorem ipsum Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.lorem15
 
