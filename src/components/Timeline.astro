@@ -1,24 +1,26 @@
 ---
-import type { CollectionEntry } from "astro:content";
+import type { CollectionEntry } from "astro:content"
 import { getCollection } from "astro:content"
-import TimelineItem from "./TimelineItem.astro";
-import SectionHeader from "./SectionHeader.astro";
+import TimelineItem from "./TimelineItem.astro"
+import SectionHeader from "./SectionHeader.astro"
 
 // Get array of experience objects from content/experience/ .yaml files
-const experienceEntries : CollectionEntry<"experience">[] = await getCollection("experience");
-
+const experienceEntries: CollectionEntry<"experience">[] = await getCollection("experience")
 ---
-<!-- Header with title -->
-<SectionHeader title="Arbejde og Uddandelse" id="timeline"/>
-<ol class="relative border-s border-gray-200 dark:border-gray-700">                  
-  {experienceEntries
-    .slice()// Create shallow copy to avoid modifying original array 
-    // Sort all entries based on startDate in descending order
-    .sort((a, b) => {
-      return b.data.startDate.getTime() - a.data.startDate.getTime();
-    })
-    // Map all entries and return a TimeLineItem for each item
-    .map((experience) => (
-    <TimelineItem experience={experience} />
-  ))}
-</ol>
+
+<section id="timeline">
+    <!-- Header with title -->
+    <SectionHeader title="Arbejde og Uddandelse" />
+    <ol class="relative border-s border-gray-200 dark:border-gray-700">
+        {
+            experienceEntries
+                .slice() // Create shallow copy to avoid modifying original array
+                // Sort all entries based on startDate in descending order
+                .sort((a, b) => {
+                    return b.data.startDate.getTime() - a.data.startDate.getTime()
+                })
+                // Map all entries and return a TimeLineItem for each item
+                .map((experience) => <TimelineItem experience={experience} />)
+        }
+    </ol>
+</section>
