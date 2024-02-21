@@ -8,9 +8,9 @@ import SectionHeader from "./SectionHeader.astro"
 const experienceEntries: CollectionEntry<"experience">[] = await getCollection("experience")
 ---
 
-<section id="timeline">
+<section  class="">
     <!-- Header with title -->
-    <SectionHeader title="Arbejde og Uddandelse" />
+    <SectionHeader id="timeline"  title="Arbejde og Uddandelse" />
     <ol class="relative border-s border-gray-200 dark:border-gray-700">
         {
             experienceEntries

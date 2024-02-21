@@ -7,6 +7,7 @@ tags:
     - Astro.js
     - Tailwind CSS
     - TypeScript
+    - React
 ---
 
-Mit portfolio er udviklet med Astro.js, Tailwind CSS og TypeScript med det formål at præsentere mine øvrige projekter, arbejdserfaring, uddannelse og certificeringer.
+Mit portfolio er udviklet med Astro.js, React, Tailwind CSS og TypeScript med det formål at præsentere mine øvrige projekter, arbejdserfaring, uddannelse og certificeringer.

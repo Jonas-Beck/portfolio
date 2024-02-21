@@ -10,8 +10,8 @@ const projectEntries: CollectionEntry<"projects">[] = await getCollection("proje
 })
 ---
 
-<section id="projects">
-    <SectionHeader title="Projekter" />
+<section  class="">
+    <SectionHeader id="projects" title="Projekter" />
     {
         projectEntries
             .slice() // Create shallow copy to avoid modifying original array
