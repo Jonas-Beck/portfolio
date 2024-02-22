@@ -54,7 +54,7 @@ export const Navigation: React.FC<NavigationProps> = ({ sections }) => {
                 <a
                     href={`#${section.id}`}
                     key={section.id}
-                    className={`${section.id == currentSectionId ? "text-2xl transition-all font-bold" : "transition-all hover:text-2xl"}`}
+                    className={`${section.id == currentSectionId ? "text-2xl font-bold text-teal-400" : "transition-all hover:text-teal-400"}`}
                 >
                     {section.name}
                 </a>
