@@ -7,7 +7,7 @@ const experience = defineCollection({
     schema: z.object({
         title: z.string(),
         role: z.string(),
-        desc: z.string(),
+        desc: z.string().max(180),
         startDate: z.coerce.date(),
         endDate: z.coerce.date().optional(),
         type: z.enum(["work", "school", "certificate"])

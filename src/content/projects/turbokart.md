@@ -12,6 +12,6 @@ tags:
 - EF Core
 - REST API
 ---
+TurboKart er et projekt, der fokuserer på at forstå og anvende forskellige designmønstre sammen med CLEAN arkitekturer. TurboKart blev anvendt i forbindelse med min S4.1 Distributed Systems eksame.
 
-lorem ipsum Lorem ipsum dolor sit amet, qui minim labore adipisicing minim sint cillum sint consectetur cupidatat.lorem15
 

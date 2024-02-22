@@ -19,7 +19,7 @@ export const Navigation: React.FC<NavigationProps> = ({ sections }) => {
     // Options for IntersectionObserver
     // TODO Tweak Margin and Threshold for all sizes
     const options: IntersectionObserverInit = {
-        rootMargin: "0px 0px -70% 0px", // Add negative margin on bottom to focus on the section currently displayed near the top
+        rootMargin: "0px 0px -75% 0px", // Add negative margin on bottom to focus on the section currently displayed near the top
         threshold: 1, // Number to indicate at what percentage of the targets visibility the observer's callback should be executed
     }
 
