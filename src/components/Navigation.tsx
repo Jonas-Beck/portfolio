@@ -11,7 +11,7 @@ interface NavigationProps {
 
 export const Navigation: React.FC<NavigationProps> = ({ sections }) => {
     // useState to keep track of current section being shown
-    const [currentSectionId, setCurrentSectionId] = useState<string | null>(null)
+    const [currentSectionId, setCurrentSectionId] = useState<string | null>(sections[0].id) // Use the first sections id as default value for mobile version
 
     // ref for IntersectionObserver
     const observerRef = useRef<IntersectionObserver | null>(null)
@@ -49,7 +49,7 @@ export const Navigation: React.FC<NavigationProps> = ({ sections }) => {
     })
 
     return (
-        <nav className="flex flex-col mt-16 navbar">
+        <nav className="flex flex-col mt-8 lg:mt-16 navbar">
             {sections.map((section) => (
                 <a
                     href={`#${section.id}`}

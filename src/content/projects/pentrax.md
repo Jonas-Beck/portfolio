@@ -1,6 +1,6 @@
 ---
 title: "Pentrax"
-githubLink: "https://github.com/Jonas-Beck/AspITLAB1"
+githubLink: "https://github.com/Jonas-Beck/AspitLAB1/tree/master/Websites/Pentrax"
 showOnFrontpage: true
 date: 2023-5-25
 tags:
