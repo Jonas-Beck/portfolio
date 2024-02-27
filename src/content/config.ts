@@ -35,4 +35,12 @@ const socials = defineCollection({
     }),
 })
 
-export const collections = { experience, projects, socials }
+const skills = defineCollection({
+    type: "content",
+    schema: z.object({
+        name: z.string(),
+    }),
+})
+
+
+export const collections = { experience, projects, socials, skills }

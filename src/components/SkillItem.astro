@@ -1,0 +1,16 @@
+---
+import type { CollectionEntry } from "astro:content"
+
+interface Props {
+    skill: CollectionEntry<"skills">
+}
+
+const { skill } = Astro.props
+const title = skill.data.name
+const { Content } = await skill.render()
+---
+
+<li class="[&>p>span]:text-teal-400">
+    <strong class="text-gray-300">{title}:</strong>
+    <Content class="text-white" />
+</li>

@@ -1,5 +1,10 @@
 ---
 import SectionHeader from "./SectionHeader.astro"
+import SkillItem from "./SkillItem.astro"
+import { type CollectionEntry, getCollection } from "astro:content"
+
+// Get array of experience objects from content/experience/ .yaml files
+const skills: CollectionEntry<"skills">[] = await getCollection("skills")
 ---
 
 <section class="mb-16">
@@ -7,38 +12,7 @@ import SectionHeader from "./SectionHeader.astro"
     <p class="text-gray-400 mb-3">
         Jeg har en bred vifte af tekniske færdigheder og erfaringer, der spænder over flere programmeringssprog og teknologier.
     </p>
-    <ul class="flex flex-col gap-3 text-gray-400 [&>li>strong]:text-gray-300 [&>li>span]:text-teal-400">
-        <li>
-            <strong>Programmeringssprog:</strong><br /> Jeg har erfaring med <span>HTML</span>, <span>JavaScript</span>, <span>PHP</span> og <span
-                >C#</span
-            >
-        </li>
-        <li><strong>Frameworks:</strong><br /> Jeg har erfaring med <span>Astro.js</span>, <span>React</span> og <span>Blazor WASM</span></li>
-        <li>
-            <strong>Databasehåndtering:</strong><br /> Jeg har arbejdet med <span>SQL</span>, <span>SSMS</span> og <span
-                >Entity Framework</span
-            >
-        </li>
-        <li>
-            <strong>API-udvikling:</strong><br /> Jeg har erfaring med at oprette <span>REST API</span>'er ved hjælp af <span>C#</span> og <span>Node.js</span>
-            / <span>Express</span>.
-        </li>
-        <li>
-            <strong>Objektorienteret programmering:</strong><br /> Jeg har en forståelse for <span>OOP</span> og har arbejdet med koncepter som
-            <span>polymorfi</span> og <span>nedarvning</span>
-        </li>
-        <li>
-            <strong>Webdesign:</strong><br /> Jeg har erfaring med at style websteder ved hjælp af <span>CSS</span>, <span>SCSS</span>, <span
-                >Bootstrap5</span
-            > og <span>Tailwind CSS</span>.
-        </li>
-        <li>
-            <strong>Versionsstyring:</strong><br /> Jeg har brugt <span>Git</span> og <span>Github</span> til
-            versionsstyring i mine projekter.
-        </li>
-        <li>
-            <strong>Softwaretest:</strong><br /> Jeg er certificeret i ISTQB Tester Foundation Level v3.1, hvilket har styrket mine færdigheder
-            inden for <span>softwaretest</span> og <span>kvalitetssikring</span>.
-        </li>
+    <ul class="flex flex-col gap-3 text-gray-400">
+        {skills.map((skill) => <SkillItem skill={skill}/>)}
     </ul>
 </section>
