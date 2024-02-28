@@ -1,33 +1,33 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Timeline from "../components/Timeline.astro";
-import About from "../components/About.astro";
-import ProjectsGroup from "../components/ProjectsGroup.astro";
-import {Navigation, type Section} from "../components/Navigation.tsx";
-import Intro from "../components/Intro.astro";
-import Socials from "../components/Socials.astro";
-import Skills from "../components/Skills.astro";
+import BaseLayout from "../layouts/BaseLayout.astro"
+import Timeline from "../components/Timeline.astro"
+import About from "../components/About.astro"
+import ProjectsGroup from "../components/ProjectsGroup.astro"
+import { Navigation, type Section } from "../components/Navigation.tsx"
+import Intro from "../components/Intro.astro"
+import Socials from "../components/Socials.astro"
+import Skills from "../components/Skills.astro"
 
 const sections: Section[] = [
-  { id: "about", name: "Om mig"},
-  { id: "skills", name: "Faglige Kompetencer"},
-  { id: "timeline", name: "Arbejde og Uddandelse"},
-  { id: "projects", name: "Projekter"}
+    { id: "about", name: "Om mig" },
+    { id: "skills", name: "Faglige Kompetencer" },
+    { id: "timeline", name: "Arbejde og Uddandelse" },
+    { id: "projects", name: "Projekter" },
 ]
-
-
 ---
 
 <BaseLayout title="JonasBeck">
-  <aside class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/3 lg:flex-col lg:py-24">
-    <Intro/>
-    <Socials/>
-    <Navigation sections={sections} client:load/>
-  </aside>
-	<main class="pt-12 lg:w-3/5 lg:py-24">
-    <About/>
-    <Skills/>
-    <Timeline/>
-    <ProjectsGroup/>
-	</main>
+    <div class="lg:flex lg:justify-between lg:gap-4">
+        <aside class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-1/3 lg:flex-col lg:py-24">
+            <Intro />
+            <Socials />
+            <Navigation sections={sections} client:load />
+        </aside>
+        <main class="pt-12 lg:w-3/5 lg:py-24">
+            <About />
+            <Skills />
+            <Timeline />
+            <ProjectsGroup />
+        </main>
+    </div>
 </BaseLayout>
