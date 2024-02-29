@@ -10,7 +10,11 @@ const { project } = Astro.props
 const { title, githubLink, tags } = project.data
 ---
 
-<a href={githubLink} target="_blank" class="block mb-4 px-6 py-4 border border-zinc-700 rounded-lg shadow bg-zinc-900 hover:bg-zinc-800 transition">
+<a
+    href={githubLink}
+    target="_blank"
+    class="block mb-4 px-6 py-4 border border-zinc-900 rounded-lg shadow bg-zinc-900 hover:border-teal-700 transition"
+>
     <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">{title}</h5>
     <p class="text-sm mb-2 text-gray-400">{project.body}</p>
     <div class="flex flex-wrap">
