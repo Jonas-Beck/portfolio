@@ -1,0 +1,44 @@
+---
+/**
+ * ExternalLink Component
+ * 
+ * This component creates a clickable link (<a>) with an optional icon and external link indicator.
+ * 
+ * @component
+ * 
+ * @param {string} iconName - Specifies the name of the main icon to be displayed.
+ * @param {number} [iconSize=20] - Defines the size of the main icon. Default is 20.
+ * @param {string} [target="_blank"] - Specifies the target attribute for the link. Default is "_blank".
+ * @param {...HTMLAttributes<"a">} ...rest - Additional HTML attributes for customization.
+ */
+
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components"
+
+interface Props extends HTMLAttributes<"a">{
+    iconName: string;
+    iconSize?: number;
+}
+
+const {
+    iconName,
+    iconSize = 20,
+    target = "_blank",
+    ...rest
+} = Astro.props
+
+/**
+ * ExternalLink Component Implementation
+ * 
+ * This component renders a styled link with the specified optional icon and external link indicator.
+ * 
+ * @component
+ * 
+ * @returns {HTMLAnchorElement} The rendered AstroLink component.
+ */
+---
+<a href={rest.href} target={target} class:list={["inline-flex gap-2 items-center hover:underline text-white group hover:text-teal-400 transition", rest.class]}>
+    <Icon name={iconName} size={iconSize}/>
+    <slot/>
+    <Icon name="external-link" class="hidden group-hover:block" size={15} />
+</a>
