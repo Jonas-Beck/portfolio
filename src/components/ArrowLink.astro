@@ -1,0 +1,22 @@
+---
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components"
+
+interface Props extends HTMLAttributes<"a">{
+    direction: "left" | "right";
+}
+
+const {
+    direction,
+    ...rest
+} = Astro.props
+
+const icon : string = "arrow-" + direction
+
+// TODO Refactor Icon class logic
+
+---
+<a href={rest.href} class:list={["inline-flex items-center font-medium text-white hover:underline ", rest.class]}>
+    <slot/>
+    <Icon name={icon} class:list={[{"order-first" : direction == "left"}, {"order-last" : direction == "right"}]} />
+</a>
