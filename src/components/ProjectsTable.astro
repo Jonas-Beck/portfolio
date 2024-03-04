@@ -1,0 +1,33 @@
+---
+import ProjectTableItem from "../components/ProjectsTableItem.astro"
+import type { CollectionEntry } from "astro:content"
+import { getCollection } from "astro:content"
+
+// Get array of experience objects from content/experience/ .yaml files
+const projectEntries: CollectionEntry<"projects">[] = await getCollection("projects")
+---
+
+<section>
+    <table class="text-sm w-full text-gray-400 table-auto">
+        <thead class="text-xs border-b border-teal-700">
+            <tr>
+                <th scope="col" class="px-4 py-3">Date</th>
+                <th scope="col" class="px-4 py-3">Project Name</th>
+                <th scope="col" class="px-6 py-3 hidden md:block">Tags</th>
+                <th scope="col" class="px-6 py-3">Link</th>
+            </tr>
+        </thead>
+        <tbody>
+            {
+                projectEntries
+                    .slice() // Create shallow copy to avoid modifying original array
+                    // Sort all entries based on startDate in descending order
+                    .sort((a, b) => {
+                        return b.data.date.getTime() - a.data.date.getTime()
+                    })
+                    // Map all entries and return a TimeLineItem for each item
+                    .map((entry) => <ProjectTableItem project={entry} />)
+            }
+        </tbody>
+    </table>
+</section>

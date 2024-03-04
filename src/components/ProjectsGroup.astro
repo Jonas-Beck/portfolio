@@ -3,6 +3,7 @@ import SectionHeader from "./SectionHeader.astro"
 import ProjectCard from "./ProjectCard.astro"
 import type { CollectionEntry } from "astro:content"
 import { getCollection } from "astro:content"
+import ArrowLink from "./ArrowLink.astro"
 
 // Get array of experience objects from content/experience/ .yaml files
 const projectEntries: CollectionEntry<"projects">[] = await getCollection("projects", ({ data }) => {
@@ -10,7 +11,7 @@ const projectEntries: CollectionEntry<"projects">[] = await getCollection("proje
 })
 ---
 
-<section  class="">
+<section>
     <SectionHeader id="projects" title="Projekter" />
     {
         projectEntries
@@ -21,4 +22,7 @@ const projectEntries: CollectionEntry<"projects">[] = await getCollection("proje
             })
             .map((entry) => <ProjectCard project={entry} />)
     }
+    <ArrowLink href={`${import.meta.env.BASE_URL}/projects`} direction="right">
+        Se alle projekter
+    </ArrowLink>
 </section>

@@ -1,6 +1,7 @@
 ---
 import { Icon } from "astro-icon/components"
 import type { CollectionEntry } from "astro:content"
+import { formatDate } from "../ts/utils"
 
 interface Props {
     experience: CollectionEntry<"experience">
@@ -11,14 +12,6 @@ const { title, desc, role, startDate, endDate, type } = experience.data
 
 const icon : string = type + "-outline"
 
-// Method to return string of date
-function formatDate(date: Date): string {
-    return date.toLocaleDateString(undefined, {
-        year: "numeric",
-        month: "short",
-        timeZone: "UTC",
-    })
-}
 ---
 <li class="mb-10 ms-6">
     <span

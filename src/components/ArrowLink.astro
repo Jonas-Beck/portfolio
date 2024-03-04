@@ -1,0 +1,45 @@
+---
+/**
+ * ArrowLink Component
+ * 
+ * This component creates a clickable link (<a>) with an arrow icon indicating the navigation direction.
+ * It leverages the Astro framework and the Icon component for rendering icons.
+ * 
+ * @component
+ * 
+ * @param {"left" | "right"} direction - Specifies the navigation direction, either "left" or "right".
+ * @param {...HTMLAttributes<"a">} ...rest - Additional HTML attributes for customization.
+ */
+
+import type { HTMLAttributes } from "astro/types";
+import { Icon } from "astro-icon/components"
+
+interface Props extends HTMLAttributes<"a">{
+    direction: "left" | "right";
+}
+
+const {
+    direction,
+    target,
+    href, 
+    class: customClass,
+    ...rest
+} = Astro.props
+
+// Generate icon name based on the specified direction
+const icon : string = "arrow-" + direction
+
+/**
+ * ArrowLink Component Implementation
+ * 
+ * This component renders a styled link with an arrow icon indicating the specified navigation direction.
+ * 
+ * @component
+ * 
+ * @returns {HTMLAnchorElement} The rendered AstroDirectionalLink component as an anchor element.
+ */
+---
+<a href={href} target={target} {...rest} class:list={["inline-flex items-center font-medium text-white hover:underline ", customClass]}>
+    <slot/>
+    <Icon name={icon} class:list={[{"order-first" : direction == "left"}, {"order-last" : direction == "right"}]} />
+</a>

@@ -1,0 +1,20 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro"
+import ArrowLink from "../components/ArrowLink.astro"
+
+interface Props {
+    title: string
+}
+
+const { title } = Astro.props
+---
+
+<BaseLayout title={title}>
+    <header class="mb-12 lg:py-16">
+        <ArrowLink href={import.meta.env.BASE_URL} direction="left" class="text-2xl">Home</ArrowLink>
+        <h1 class="text-teal-400 text-5xl">{title}</h1>
+    </header>
+    <main>
+        <slot />
+    </main>
+</BaseLayout>

@@ -7,6 +7,7 @@ tags:
     - HTML
     - SCSS
     - Bootstrap5
+    - Multi-page
 ---
 
 Pentrax er et webprojekt, der er blevet udviklet med fokus på brugen af SCSS og Bootstrap 5 til styling. Projektet er baseret på et udleveret design.
