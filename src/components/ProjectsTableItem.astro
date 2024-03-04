@@ -14,12 +14,14 @@ const { title, githubLink, tags, date } = project.data
 ---
 
 <tr class="bg-zinc-900 border-b border-gray-700">
-    <th scope="row" class="px-6 py-4">{formatDate(date)}</th>
+    <th scope="row" class="px-2 py-4">{formatDate(date)}</th>
     <td class="px-6 py-4 text-center font-medium text-white">{title}</td>
     <td class="px-4 py-4 hidden md:flex md:flex-wrap">
         {tags.map((tag) => <TagItem name={tag} />)}
     </td>
     <td class="px-4 py-4 text-center">
-        <ButtonLink link={githubLink} text="Github" />
+        <ButtonLink href={githubLink} >
+            Github
+        </ButtonLink>
     </td>
 </tr>
