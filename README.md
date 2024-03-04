@@ -12,7 +12,7 @@ My portfolio is developed using Astro.js, React, Tailwind CSS, and TypeScript. I
 - **React**: A JavaScript library for building user interfaces.
 - **Tailwind CSS**: A utility-first CSS framework that helps in quickly building modern designs.
 - **TypeScript**: A typed superset of JavaScript that enhances code quality and development experience.
-- **Github Pages**: Hosting service by GitHub to deploy your portfolio for free.
+- **Github Pages**: Static site hosting service by GitHub.
 - **Github Actions**: Automated workflows for continuous integration and deployment.
 
 ## Features
