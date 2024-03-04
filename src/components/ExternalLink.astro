@@ -24,6 +24,8 @@ const {
     iconName,
     iconSize = 20,
     target = "_blank",
+    class: customClass,
+    href,
     ...rest
 } = Astro.props
 
@@ -37,7 +39,7 @@ const {
  * @returns {HTMLAnchorElement} The rendered AstroLink component.
  */
 ---
-<a href={rest.href} target={target} class:list={["inline-flex gap-2 items-center hover:underline text-white group hover:text-teal-400 transition", rest.class]}>
+<a href={href} target={target} class:list={["inline-flex gap-2 items-center hover:underline text-white group hover:text-teal-400 transition", customClass]}>
     <!-- Only display icon if iconName has been provided -->
     { iconName && <Icon name={iconName} size={iconSize}/> }
     <slot/>

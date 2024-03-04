@@ -20,6 +20,9 @@ interface Props extends HTMLAttributes<"a">{
 
 const {
     direction,
+    target,
+    href, 
+    class: customClass,
     ...rest
 } = Astro.props
 
@@ -36,7 +39,7 @@ const icon : string = "arrow-" + direction
  * @returns {HTMLAnchorElement} The rendered AstroDirectionalLink component as an anchor element.
  */
 ---
-<a href={rest.href} target={rest.target} class:list={["inline-flex items-center font-medium text-white hover:underline ", rest.class]}>
+<a href={href} target={target} {...rest} class:list={["inline-flex items-center font-medium text-white hover:underline ", customClass]}>
     <slot/>
     <Icon name={icon} class:list={[{"order-first" : direction == "left"}, {"order-last" : direction == "right"}]} />
 </a>

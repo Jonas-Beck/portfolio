@@ -1,12 +1,17 @@
 ---
-interface Props {
-    link: string,
-    text: string
-}
+import type { HTMLAttributes } from "astro/types"
 
-const { link, text } = Astro.props
+interface Props extends HTMLAttributes<"a"> {}
+
+const { target = "_blank", href, class: customClass, ...rest } = Astro.props
+
 ---
 
-<a href={link} class="text-teal-400 hover:border-teal-400 border border-zinc-900 transition bg-zinc-800 rounded-lg text-sm px-5 py-2.5">
-    {text}
+<a
+    href={href}
+    target={target}
+    {...rest}
+    class:list={["text-teal-400 hover:border-teal-400 border border-zinc-900 transition bg-zinc-800 rounded-lg text-sm px-5 py-2.5", customClass]}
+>
+    <slot/>
 </a>
