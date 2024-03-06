@@ -21,7 +21,7 @@ const icon : string = type + "-outline"
     </span>
     <h3 class="mb-1 text-lg font-semibold text-white">{title} - {role}</h3>
     <time class="block mb-2 text-sm leading-none text-teal-400"
-        >{formatDate(startDate)} {endDate != null ? " - " + formatDate(endDate) : ""}</time
+        >{formatDate(startDate)} - {endDate != null ? formatDate(endDate) : "Nu"}</time
     >
     <p class="text-base text-gray-400">{desc}</p>
 </li>
