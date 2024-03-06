@@ -10,7 +10,7 @@ const experience = defineCollection({
         desc: z.string().max(180),
         startDate: z.coerce.date(),
         endDate: z.coerce.date().optional(),
-        type: z.enum(["work", "school", "certificate"]),
+        type: z.enum(["work", "school"]),
     }),
 })
 
@@ -50,4 +50,13 @@ const skills = defineCollection({
     }),
 })
 
-export const collections = { experience, projects, socials, skills }
+const certificate = defineCollection({
+    type: "data",
+    schema: z.object({
+        name: z.string(),
+        link: z.string(),
+        date: z.coerce.date(),
+    })
+})
+
+export const collections = { experience, projects, socials, skills, certificate }

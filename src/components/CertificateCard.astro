@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from "astro:content"
+import { formatDate } from "../ts/utils"
+import { Icon } from "astro-icon/components"
+
+interface Props {
+    certificate: CollectionEntry<"certificate">
+}
+
+const { certificate } = Astro.props
+const { name, link, date } = certificate.data
+---
+
+<a
+    target="_blank"
+    href={link}
+    class="flex relative group justify-between flex-wrap items-center mb-4 px-6 py-4 border border-transparent shadow-none rounded-lg bg-zinc-900 hover:border-teal-700 transition"
+>
+    <h5 class="mb-2 text-xl font-bold tracking-tight text-white">{name}</h5>
+    <p class="text-sm mb-2 text-gray-400">{formatDate(date)}</p>
+    <Icon name="external-link" size={15} class="hidden group-hover:block absolute top-1.5 right-1.5 transition text-teal-400" />
+</a>
