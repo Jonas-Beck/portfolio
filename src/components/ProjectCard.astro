@@ -7,16 +7,15 @@ interface Props {
 }
 
 const { project } = Astro.props
-const { title, githubLink, tags } = project.data
+const { title, githubLink, tags, shortDesc } = project.data
 ---
 
 <a
-    href={githubLink}
-    target="_blank"
+    href={`${import.meta.env.BASE_URL}/projects/${project.slug}`}
     class="block mb-4 px-6 py-4 border border-zinc-900 rounded-lg shadow bg-zinc-900 hover:border-teal-700 transition"
 >
     <h5 class="mb-2 text-2xl font-bold tracking-tight text-white">{title}</h5>
-    <p class="text-sm mb-2 text-gray-400">{project.body}</p>
+    <p class="text-sm mb-2 text-gray-400">{shortDesc}</p>
     <div class="flex flex-wrap">
         {tags.map((tag) => <TagItem name={tag} />)}
     </div>

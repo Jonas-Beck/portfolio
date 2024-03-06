@@ -6,7 +6,7 @@ import ExternalLink from "./ExternalLink.astro";
 const socialEntries : CollectionEntry<"socials">[] = await getCollection("socials");
 
 ---
-<div class="mt-8 flex flex-col">
+<div class="mt-8 flex flex-col items-start">
   {socialEntries
     // Map all entries and return a externalLink for each item
     .map((entry) => (

@@ -3,6 +3,6 @@ import PageLayout from "../layouts/PageLayout.astro"
 import ProjectsTable from "../components/ProjectsTable.astro"
 ---
 
-<PageLayout title="Projects">
+<PageLayout title="Projekter" linkHref={import.meta.env.BASE_URL} linkText="Home">
     <ProjectsTable />
 </PageLayout>

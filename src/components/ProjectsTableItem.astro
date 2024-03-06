@@ -4,7 +4,6 @@ import TagItem from "./TagItem.astro"
 import ButtonLink from "./ButtonLink.astro"
 import { formatDate } from "../ts/utils"
 
-
 interface Props {
     project: CollectionEntry<"projects">
 }
@@ -20,8 +19,6 @@ const { title, githubLink, tags, date } = project.data
         {tags.map((tag) => <TagItem name={tag} />)}
     </td>
     <td class="px-4 py-4 text-center">
-        <ButtonLink href={githubLink} >
-            Github
-        </ButtonLink>
+        <ButtonLink href={`${import.meta.env.BASE_URL}/projects/${project.slug}`}>Info</ButtonLink>
     </td>
 </tr>

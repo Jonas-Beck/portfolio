@@ -1,0 +1,24 @@
+---
+import { Image } from "astro:assets"
+import ExternalLink from "../components/ExternalLink.astro"
+import PageLayout from "./PageLayout.astro"
+import type { CollectionEntry } from "astro:content"
+
+interface Props {
+    project: CollectionEntry<"projects">
+}
+
+const { project } = Astro.props
+const { title, githubLink, livedemoLink, banner } = project.data
+---
+
+<PageLayout title={title} linkHref={`${import.meta.env.BASE_URL}/projects/`} linkText="Projekter">
+    <section class="prose max-w-none prose-invert mb-16">
+        {banner && <Image src={banner.image} class="border border-zinc-800 hidden md:block" alt={banner.alt} />}
+        <div class="flex flex-col items-start">
+            <ExternalLink href={githubLink} class="text-2xl" iconName="logos/github">Github</ExternalLink>
+            {livedemoLink && <ExternalLink href={livedemoLink} iconName="demo" class="text-2xl">Live Demo</ExternalLink>}
+        </div>
+        <slot />
+    </section>
+</PageLayout>
