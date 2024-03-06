@@ -22,7 +22,7 @@ const projectEntries: CollectionEntry<"projects">[] = await getCollection("proje
             })
             .map((entry) => <ProjectCard project={entry} />)
     }
-    <ArrowLink href={`${import.meta.env.BASE_URL}/projects`} direction="right">
+    <ArrowLink href={`${import.meta.env.BASE_URL}/projects`} class="mb-4" direction="right">
         Se alle projekter
     </ArrowLink>
 </section>
