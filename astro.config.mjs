@@ -8,5 +8,8 @@ import react from "@astrojs/react";
 export default defineConfig({
   integrations: [tailwind(), icon(), react()],
   site: 'https://jonas-beck.github.io',
-  base: '/portfolio'
+  base: '/portfolio',
+  prefetch: {
+      prefetchAll: true
+  }
 });
