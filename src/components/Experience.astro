@@ -1,6 +1,11 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { formatDateRange, isCurrentRole } from "../lib/experience";
+import {
+  formatDateRange,
+  groupByCompany,
+  isCurrentRole,
+  splitCodeSpans,
+} from "../lib/experience";
 import Check from "./icons/Check.astro";
 import Section from "./Section.astro";
 
@@ -13,43 +18,57 @@ const { experience } = Astro.props;
 ---
 
 <Section id="experience">
-  {experience.map(({ data }) => {
-    const { company, position, start, end, summary } = data;
-    const current = isCurrentRole(data);
-    return (
-      <div
-        class:list={[
-          "border-edge relative border-l pb-7 pl-6",
-          "before:absolute before:top-2 before:-left-[4.5px] before:h-2 before:w-2",
-          current ? "before:bg-ok" : "before:bg-edge",
-        ]}
-      >
-        <div class="flex flex-wrap items-baseline gap-x-3.5 gap-y-1">
-          <span class="text-fg text-xl font-bold">{company}</span>
-          <h3 class="text-fg-dim text-xl font-medium">{position}</h3>
-          {current && (
-            <span
-              data-current-role
-              class="bg-ok text-bg px-2 text-xs font-bold"
-            >
-              current
-            </span>
-          )}
-          <span class="text-fg-dim ml-auto text-xs max-sm:ml-0 max-sm:w-full">
-            {formatDateRange(start, end)}
-          </span>
-        </div>
-        <ul class="mt-3 flex list-none flex-col gap-2.5">
-          {summary.map((line) => (
-            <li class="text-fg-dim grid max-w-[72ch] grid-cols-[1.25rem_1fr] gap-2.5 text-base">
-              <span class="text-fg-dim">
-                <Check />
-              </span>
-              <span>{line}</span>
-            </li>
-          ))}
-        </ul>
+  <div class="flex flex-col gap-10">
+    {groupByCompany(experience).map(({ company, roles }) => (
+      <div>
+        <h3 class="text-fg tracking-display text-2xl font-extrabold">
+          {company}
+        </h3>
+        <ol class="border-edge mt-4 flex flex-col gap-7 border-l">
+          {roles.map(({ data }) => {
+            const { position, start, end, summary } = data;
+            const current = isCurrentRole(data);
+            return (
+              <li
+                class:list={[
+                  "relative pl-6",
+                  "before:absolute before:top-2 before:-left-[4.5px] before:h-2 before:w-2",
+                  current ? "before:bg-ok" : "before:bg-edge",
+                ]}
+              >
+                <div class="flex flex-wrap items-baseline gap-x-3.5 gap-y-1">
+                  <h4 class="text-fg text-xl font-medium">{position}</h4>
+                  {current && (
+                    <span
+                      data-current-role
+                      class="bg-ok text-bg px-2 text-xs font-bold"
+                    >
+                      current
+                    </span>
+                  )}
+                  <span class="text-fg-dim ml-auto text-xs max-sm:ml-0 max-sm:w-full">
+                    {formatDateRange(start, end)}
+                  </span>
+                </div>
+                <ul class="mt-2.5 flex list-none flex-col gap-1.5">
+                  {summary.map((line) => (
+                    <li class="text-fg-dim grid max-w-[88ch] grid-cols-[1.25rem_1fr] gap-2.5 text-base text-pretty">
+                      <span>
+                        <Check />
+                      </span>
+                      <span>
+                        {splitCodeSpans(line).map(({ text, code }) =>
+                          code ? <code class="text-fg">{text}</code> : text,
+                        )}
+                      </span>
+                    </li>
+                  ))}
+                </ul>
+              </li>
+            );
+          })}
+        </ol>
       </div>
-    );
-  })}
+    ))}
+  </div>
 </Section>

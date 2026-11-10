@@ -37,4 +37,24 @@ describe("Experience", () => {
     expect(html).toContain("Core Platform Engineer");
     expect(html).not.toContain("data-current-role");
   });
+
+  it("heads consecutive roles at one company with the company once", async () => {
+    const html = await render([
+      role({}),
+      role({ position: "Junior Developer in CCoE", end: "2026-07" }),
+    ]);
+    expect(html).toContain("Junior Developer in CCoE");
+    expect(html.match(/<h3\b/g)).toHaveLength(1);
+  });
+
+  it("sets a backticked name as code", async () => {
+    const html = await render([role({ summary: ["Built `helms-deep`."] })]);
+    expect(html).toMatch(/<code\b[^>]*>helms-deep<\/code>/);
+  });
+
+  it("leaves a line without backticks free of code", async () => {
+    const html = await render([role({})]);
+    expect(html).toContain("Self-hosted GitHub Actions runners");
+    expect(html).not.toContain("<code");
+  });
 });
