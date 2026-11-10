@@ -1,6 +1,6 @@
 # Theming: THEMES as source of truth, pre-paint script
 
-Status: ready-for-agent
+Status: done
 
 Blocked by: 04, 06
 
@@ -52,6 +52,7 @@ From the implementation: `Layout.astro` has a `<script is:inline define:vars>` i
 header now also uses. No new test was added for the inline script; `resolveTheme`
 stays the tested statement of the rule. Running the built script in node:vm with
 stub storage gave stored id → kept, junk/nothing/throwing storage → catppuccin.
-Not yet checked in a real browser: the reload with no flash. Until Header's
+Checked in a real browser by Jonas: the stored theme survives a reload with no
+flash, and a junk id falls back to catppuccin. Until Header's
 deferred script runs, `theme-color` and the chips' `aria-pressed` still show the
 default theme. That is issue 06 behaviour, left as it was.
