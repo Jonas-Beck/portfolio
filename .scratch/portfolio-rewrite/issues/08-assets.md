@@ -1,6 +1,6 @@
 # public/ assets
 
-Status: ready-for-agent
+Status: needs-info
 
 Blocked by: 01
 
@@ -25,3 +25,16 @@ component port; they are probably dead now that `Check.astro` and
 
 `public/` contains only Jonas's own assets, and no build warning references a
 missing image.
+
+## Notes
+
+From the implementation: the four listed files are copied byte-for-byte, and
+nothing else came across. `check.svg`, `external.svg` and `menu.svg` (the last
+one not named above) have no references and were dropped. `mise run build` is
+clean, and every image path in `dist/index.html` resolves.
+
+Open: `favicon.svg` is the stock Astro logo from `npm create astro`, not
+Jonas's own mark, so carrying it over conflicts with "Done when". Jonas has to
+choose: keep it, ship no favicon (an honest gap, like the unset OG card), or
+make a replacement and track it as its own issue. Once that's decided this is
+done.
