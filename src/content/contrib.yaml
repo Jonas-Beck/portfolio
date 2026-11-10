@@ -1,0 +1,17 @@
+# One entry per upstream repository; `prs` is the evidence and needs at least
+# one. There is no state field: the card's word is derived from `maintainer`
+# and the pr states.
+#
+# policy-reporter and the Backstage events Kafka module are held back until
+# their pr URLs are known (.scratch/portfolio-rewrite/issues/12). Both are
+# described under experience in the meantime.
+
+- slug: github-actions-cache-server
+  name: github-actions-cache-server
+  repo: falcondev-oss/github-actions-cache-server
+  summary: Azure Blob Storage driver for the self-hosted GitHub Actions cache server, implementing the full storage interface alongside Helm chart values and Azurite-backed tests
+  note: contributed upstream
+  prs:
+    - title: "feat(storage): add Azure Blob Storage driver"
+      url: https://github.com/falcondev-oss/github-actions-cache-server/pull/280
+      state: merged

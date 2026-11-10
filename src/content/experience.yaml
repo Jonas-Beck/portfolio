@@ -1,0 +1,28 @@
+# One entry per role, keyed by a stable id. `start` and `end` are YYYY-MM; leave
+# `end` out for the current role.
+
+velux-core-platform-engineer:
+  company: VELUX
+  position: Core Platform Engineer
+  start: "2026-08"
+  summary:
+    - I design and deploy self-hosted GitHub Actions runners on Kubernetes to reduce CI costs and improve build performance through local caching, Kubernetes-based BuildKit builders for efficient Docker image builds, and a local mirror registry.
+
+velux-junior-developer:
+  company: VELUX
+  position: Junior Developer in CCoE
+  start: "2025-01"
+  end: "2026-07"
+  summary:
+    - I maintain and improve our internal CLI Bura used by developers to easily create HelmReleases for their services and release to our Kubernetes clusters using GitOps repositories.
+    - I create and develop internal golden path Helm chart called helms-deep that contain all our best practices and made it easier for our developers to release services to our Kubernetes clusters.
+
+velux-intern:
+  company: VELUX
+  position: Intern in CCoE
+  start: "2024-04"
+  end: "2024-12"
+  summary:
+    - I maintained and improved our internal developer portal (Backstage) by creating custom internal plugins that improved platform visibility and integration.
+    - I developed the policy-reporter Backstage plugin to display policy reports from tools like Kyverno, Trivy, and Falco for Backstage entities. This plugin was later open-sourced and donated to the official Kyverno CNCF project.
+    - I created a Kafka module for Backstage's events plugin, enabling Backstage to subscribe to Kafka topics and expose them through the internal event service. The module was also open-sourced and contributed back to the official Backstage repository.
