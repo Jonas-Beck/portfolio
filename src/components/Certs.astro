@@ -1,0 +1,40 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { formatCertDates } from "../lib/certs";
+import External from "./icons/External.astro";
+import Section from "./Section.astro";
+
+// Takes the entries already sorted: index.astro owns the order. Compact rows,
+// not contrib's cards: an exam should not read as weighty as upstream work.
+interface Props {
+  certs: CollectionEntry<"certs">[];
+}
+
+const { certs } = Astro.props;
+---
+
+<Section id="certs">
+  <ul class="flex flex-col gap-5">
+    {certs.map(({ data }) => {
+      const { abbr, name, issuer, url } = data;
+      return (
+        <li class="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-x-4 max-sm:grid-cols-1">
+          <span class="text-accent text-lg font-extrabold">{abbr}</span>
+          <div>
+            <a
+              class="text-path text-lg hover:underline"
+              href={url}
+              target="_blank"
+              rel="noopener"
+            >
+              {name} <External />
+            </a>
+            <p class="text-fg-dim mt-1 text-xs">
+              {issuer} · {formatCertDates(data)}
+            </p>
+          </div>
+        </li>
+      );
+    })}
+  </ul>
+</Section>

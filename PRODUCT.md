@@ -25,8 +25,8 @@ A platform engineer whose internal-platform work has gone upstream and stayed th
 ## Operating Context
 
 - Visitors land from external profiles and repos, often mid-skim and often on a phone.
-- One page (`src/pages/index.astro`) with three sections, each a command: `whoami`, `experience` (`#experience`), `contrib` (`#contrib`). See `GLOSSARY.md`.
-- Site metadata, nav, themes and the whoami copy live in `src/site.config.ts`; experience and contrib are content collections (`src/content/*.yaml`, schemas in `src/content.config.ts`). Components render that data and hold no copy of their own.
+- One page (`src/pages/index.astro`) with four sections, each a command: `whoami`, `experience` (`#experience`), `contrib` (`#contrib`), `certs` (`#certs`). See `GLOSSARY.md`.
+- Site metadata, nav, themes and the whoami copy live in `src/site.config.ts`; experience, contrib and certs are content collections (`src/content/*.yaml`, schemas in `src/content.config.ts`). Components render that data and hold no copy of their own.
 - Jonas maintains the site himself, in passing, alongside full-time platform work — edits must be a content change, not a redesign.
 
 ## Capabilities and Constraints
@@ -53,6 +53,8 @@ Real and showable (the contrib section):
 - **Policy Reporter** — Backstage plugin displaying policy reports from Kyverno, Trivy and Falco for Backstage entities; open-sourced and donated to the Kyverno CNCF project, which Jonas now helps maintain. Screenshot at `public/policy-reporter.png`.
 - **Backstage Kafka module** — a module for Backstage's events plugin that subscribes to Kafka topics and exposes them through the internal event service; contributed upstream to the official Backstage repository in merged PRs.
 - **github-actions-cache-server** — Azure Blob Storage driver for the self-hosted GitHub Actions cache server, merged upstream.
+
+Certifications (the certs section): **KCNA** (Kubernetes and Cloud Native Associate, The Linux Foundation), Jun 2025 to Jun 2027, verifiable on Credly. An entry-level exam; it backs up the contrib work rather than leading it.
 
 Described but not linkable — internal VELUX work, which belongs in experience prose and must never be dressed up as a public artifact: the Bura CLI for generating HelmReleases, the `helms-deep` golden-path Helm chart, and self-hosted GitHub Actions runners on Kubernetes with BuildKit builders and a local mirror registry.
 

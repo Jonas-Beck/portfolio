@@ -1,0 +1,12 @@
+# One entry per cert, keyed by a stable id. `issued` and `expires` are YYYY-MM;
+# leave `expires` out for a cert that does not lapse. There is no state field:
+# the page shows the dates, and a lapsed cert stays until it is renewed or
+# removed by hand. `url` is the verification page a visitor can open.
+
+kcna:
+  abbr: KCNA
+  name: Kubernetes and Cloud Native Associate
+  issuer: The Linux Foundation
+  issued: "2025-06"
+  expires: "2027-06"
+  url: https://www.credly.com/badges/43b89d59-7a48-453e-af3e-929ce8d7368b

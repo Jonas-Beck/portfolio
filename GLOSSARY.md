@@ -8,7 +8,7 @@ of his platform-engineering work, plus a route onward.
 
 ### Sections
 
-The page has exactly three sections. Each section's name, its anchor id and its
+The page has exactly four sections. Each section's name, its anchor id and its
 nav label are the same word.
 
 **whoami**:
@@ -25,6 +25,12 @@ A body of work contributed to one upstream repository owned by someone else.
 One contrib is one upstream repository, however many pull requests it took.
 _Avoid_: project, upstream, open-source, portfolio piece
 
+**certs**:
+A list of certifications Jonas holds, each a **cert**. It comes last on the page:
+for the readers the site is for, an exam supports the upstream work rather than
+leading it.
+_Avoid_: certifications, credentials, badges
+
 ### Within a contrib
 
 **pr**:
@@ -40,6 +46,15 @@ Jonas holds that role in the upstream project, otherwise rolled up from the
 states of its prs: the most advanced state true of every pr, so `merged` only
 once all are merged and `open` while any is still open.
 _Avoid_: status, badge
+
+### Within certs
+
+**cert**:
+One certification, linked to a verification page a visitor can open. It shows
+its issue and expiry months rather than a state word: a static build cannot know
+whether it has lapsed on the day of the visit. A lapsed cert stays until it is
+renewed or removed.
+_Avoid_: certification, credential, badge
 
 ### Boundaries
 

@@ -1,18 +1,22 @@
 ---
 import { getCollection } from "astro:content";
+import Certs from "../components/Certs.astro";
 import Contrib from "../components/Contrib.astro";
 import Experience from "../components/Experience.astro";
 import Whoami from "../components/Whoami.astro";
 import Layout from "../layouts/Layout.astro";
+import { sortCerts } from "../lib/certs";
 import { sortContribs } from "../lib/contrib";
 import { sortExperience } from "../lib/experience";
 
 const experience = sortExperience(await getCollection("experience"));
 const contribs = sortContribs(await getCollection("contrib"));
+const certs = sortCerts(await getCollection("certs"));
 ---
 
 <Layout>
   <Whoami />
   <Experience experience={experience} />
   <Contrib contribs={contribs} />
+  <Certs certs={certs} />
 </Layout>

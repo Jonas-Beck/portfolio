@@ -1,8 +1,8 @@
-// Site metadata, nav and themes. Experience and contrib are content
+// Site metadata, nav and themes. Experience, contrib and certs are content
 // collections (src/content.config.ts); everything that would be a collection
 // of one lives here instead.
 
-export const SECTIONS = ["whoami", "experience", "contrib"] as const;
+export const SECTIONS = ["whoami", "experience", "contrib", "certs"] as const;
 export type SectionId = (typeof SECTIONS)[number];
 
 // A section's name, its anchor and its nav label are the same word, so both
@@ -54,6 +54,7 @@ export const SITE: SiteConfig = {
     { label: "whoami", href: "#whoami" },
     { label: "experience", href: "#experience" },
     { label: "contrib", href: "#contrib" },
+    { label: "certs", href: "#certs" },
   ],
   socialLinks: [
     { label: "LinkedIn", href: "https://linkedin.com/in/jonas-beck-591a88291" },

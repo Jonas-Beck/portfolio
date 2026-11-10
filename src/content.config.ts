@@ -2,9 +2,10 @@ import { defineCollection } from "astro:content";
 import { file, type Loader } from "astro/loaders";
 import { z } from "astro/zod";
 import { REPO_PATTERN } from "./lib/contrib";
-import { YEAR_MONTH_PATTERN } from "./lib/experience";
+import { YEAR_MONTH_PATTERN } from "./lib/date";
 
-// See docs/adr/0001-content-collections-with-derived-contrib-state.md.
+// See docs/adr/0001-content-collections-with-derived-contrib-state.md and
+// docs/adr/0002-certs-show-dates-not-state.md.
 
 // Zero-padded, so plain string comparison orders these chronologically.
 const yearMonth = z
@@ -81,4 +82,25 @@ const contrib = defineCollection({
     }),
 });
 
-export const collections = { experience, contrib };
+// No state field: the page shows the dates rather than "active" or "expired",
+// which a static build could only get right on the day it ran.
+const certs = defineCollection({
+  loader: strictFile("src/content/certs.yaml"),
+  schema: z
+    .strictObject({
+      abbr: z.string().min(1),
+      name: z.string().min(1),
+      issuer: z.string().min(1),
+      issued: yearMonth,
+      // Absent means the cert does not lapse.
+      expires: yearMonth.optional(),
+      // The evidence: a verification page a visitor can open.
+      url: z.url({ protocol: /^https$/ }),
+    })
+    .refine(
+      ({ issued, expires }) => expires === undefined || expires >= issued,
+      { message: "`expires` is earlier than `issued`", path: ["expires"] },
+    ),
+});
+
+export const collections = { experience, contrib, certs };
