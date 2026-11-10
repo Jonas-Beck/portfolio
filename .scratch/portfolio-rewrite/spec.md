@@ -27,6 +27,11 @@ across on disk; whether to override Impeccable and commit them is still open.
 
 Flat single Astro project at the repository root. No workspaces.
 
+Filenames are **PascalCase under `src/components/**`** (including
+`icons/`) and **kebab-case everywhere else**; directories are kebab-case
+throughout. Nothing enforces this — see **Formatting and linting** — so it
+lives here.
+
 ```
 /
 ├── GLOSSARY.md
@@ -40,7 +45,7 @@ Flat single Astro project at the repository root. No workspaces.
 ├── astro.config.mjs
 ├── tsconfig.json
 ├── .prettierrc.mjs
-├── eslint.config.js
+├── .prettierignore
 ├── docs/adr/
 ├── .impeccable/
 ├── public/
@@ -50,10 +55,10 @@ Flat single Astro project at the repository root. No workspaces.
     ├── content/
     │   ├── experience.yaml
     │   └── contrib.yaml
-    ├── components/            PascalCase, one per section + Section.astro
+    ├── components/            PascalCase filenames, one per section + Section.astro
     │   └── icons/
     ├── layouts/Layout.astro
-    ├── lib/                   tested helpers, *.test.ts beside each
+    ├── lib/                   kebab-case, tested helpers, *.test.ts beside each
     ├── pages/index.astro
     └── styles/global.css
 ```
@@ -88,28 +93,86 @@ See the ADR. In short:
 **mise owns what bootstraps the repo** — `node`, `aube`, `hk`. The unused
 `biome` pin in the (still untracked) `mise.toml` is dropped.
 
-**`package.json` owns what the build imports** — `astro`, `typescript`, `eslint`
-and plugins, `prettier` and plugins, `vitest`. Installed with `aube`;
+**`package.json` owns what the build imports** — `astro`, `typescript`,
+`prettier` and plugins, `vitest`. Installed with `aube`;
 `aube-lock.yaml` is the only lockfile in the repo, and no npm, pnpm or yarn
 lockfile is ever committed.
 
 ### Formatting and linting
 
-Prettier formats; ESLint lints. The requirement that decides the formatter:
-`.astro` templates must be formatted and Tailwind classes sorted. In a
-design-heavy repo the templates are the code, and unsorted class lists make
-diffs unreadable. Prettier covers both through its Astro and Tailwind plugins.
+Prettier formats. Nothing lints — see below.
 
-- Prettier with `prettier-plugin-astro` and `prettier-plugin-tailwindcss`.
-- ESLint flat config: `eslint-plugin-unicorn` **recommended** (the strict part),
-  `typescript-eslint` **recommended** (not `strictTypeChecked`: it needs type
-  information, TypeScript cannot see `.astro` without the content mapper, and
-`tsc` already covers
-  that ground), `eslint-plugin-astro` recommended via `astro-eslint-parser`,
-  `eslint-config-prettier` last.
-- `unicorn/filename-case` ships in unicorn-recommended defaulting to kebabCase,
-  which flags every `.astro` component. Scope it: PascalCase under
-  `src/components/**`, kebab-case elsewhere.
+The requirement that decides the formatter: `.astro` templates must be
+formatted and Tailwind classes sorted. In a design-heavy repo the templates are
+the code, and unsorted class lists make diffs unreadable.
+
+- Prettier with `prettier-plugin-astro` and `prettier-plugin-tailwindcss`,
+  the Tailwind plugin last so it can wrap the Astro printer. Tailwind 4 has no
+  config file, so `tailwindStylesheet` points at the stylesheet holding
+  `@theme`.
+- `.prettierignore` holds the build output, Astro's generated types, the
+  machine-owned lockfiles, the vendored agent-skill trees and `.scratch/`.
+  Without it `prettier --write .` rewrites 60 files this repo does not own.
+  `.scratch/` is excluded deliberately: the issue tracker is hand-written
+  working notes, and a formatter that rewraps tickets churns files unrelated to
+  whatever is being worked on.
+
+**Known gap: Tailwind sorting is a no-op in `.astro`.**
+`prettier-plugin-tailwindcss@0.8.1` (2026-07-15) predates
+`prettier-plugin-astro@1.0.0` (2026-09-08) and does not understand its
+rewritten AST, so it silently skips those files while still sorting every other
+file type. Verified: pinning `prettier-plugin-astro@0.14.1` restores sorting
+immediately. Staying on 1.1.2 and accepting unsorted classes for now; revisit
+when the Tailwind plugin ships Astro 1.x support.
+
+**ESLint is dropped.** The original plan was `eslint-plugin-unicorn`
+recommended plus `typescript-eslint` recommended, `eslint-plugin-astro` via
+`astro-eslint-parser`, `eslint-config-prettier` last. It cannot run on
+TypeScript 7:
+
+- `typescript@7.x` no longer exposes the classic compiler API. Its main entry
+  is `./lib/version.cjs`, exporting only `{version, versionMajorMinor}`;
+  `createSourceFile`, `SyntaxKind` and `forEachChild` are all `undefined`, and
+  the replacement API lives under `typescript/ast`. `@typescript-eslint/parser`
+  therefore throws at import whenever the TypeScript major is 7 or above. The
+  gate is honest, not a blanket refusal, and lifting it upstream is tracked in
+  typescript-eslint issue 10940.
+- Running it without type-aware rules does not help: the throw is at _import_,
+  so it fires regardless of which rules are enabled.
+- Dropping only `typescript-eslint` does not help either. `.ts` files then go
+  unlinted entirely, and `.astro` files with typed frontmatter fail to parse
+  with `The keyword 'interface' is reserved`, because `eslint-plugin-astro`
+  needs `@typescript-eslint/parser` for the frontmatter. **Any ESLint coverage
+  of `.astro` requires a TypeScript 6 in the lint chain.**
+- A side-by-side TypeScript 6 does work, but only via
+  `aube.packageExtensions`, which converts typescript-eslint's `typescript`
+  _peer_ into a real dependency edge. Plain `aube.overrides` is not enough: a
+  peer resolves from the root, so the pin holds on an incremental install and
+  silently reverts on `aube ci`.
+
+So the choice was a second TypeScript in the repo purely to parse for the
+linter, against dropping the linter. Dropped it. `tsc --noEmit` under
+`astro/tsconfigs/strictest` already supplies the strictness ESLint was there
+for, including unused locals and the `noUncheckedIndexedAccess` /
+`exactOptionalPropertyTypes` pair that catches this data model's real failure
+mode; Vitest covers the helpers. Of `eslint-plugin-astro`'s nine recommended
+rules, five check for deprecated Astro APIs this greenfield Astro 7 repo will
+never call.
+
+What is lost, and where it goes instead:
+
+- `unicorn/filename-case` enforcing PascalCase under `src/components/**` and
+  kebab-case elsewhere. This is now a convention only, stated in
+  **Repository shape** above.
+- unicorn's opinions. Worth noting what they cost before they were dropped:
+  they wanted `Props` renamed to `Properties` (Astro's own convention),
+  rewrote JSDoc into a non-standard asterisk-free shape, and demanded
+  `src/` be renamed `Src/` until `filename-case` was given
+  `checkDirectories: false`.
+
+Revisit when typescript-eslint supports TypeScript 7. Nothing in the repo
+depends on ESLint's absence, so adding it back is a `package.json` change and
+one config file.
 
 ### tsconfig and type-checking
 
@@ -145,10 +208,15 @@ upstream chain stops accepting emnapi prereleases.
 
 ### Hooks
 
-`hk`, pre-push only to start: `prettier --check`, `eslint` (no `--fix`),
-`aube run check` (`tsc`), `vitest run`. Check mode, not fix mode — a hook that fixes during
-a push strands the fix outside the commits being pushed. `hk fix` stays available
-manually. A pre-commit fix hook can be attached to the same steps later.
+`hk`, pre-push only to start: `aube run format:check` (`prettier --check`),
+`aube run check` (`tsc`), `vitest run`. Check mode, not fix mode — a hook that
+fixes during a push strands the fix outside the commits being pushed.
+`hk fix` stays available manually. A pre-commit fix hook can be attached to the
+same steps later.
+
+Use the `format:check` script, not `aube run format --check`: script arguments
+are appended, so that expands to `prettier --write . --check` and `--write`
+wins — it rewrites the tree instead of checking it.
 
 ## Testing
 

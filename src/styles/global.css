@@ -5,6 +5,8 @@
    component port. This file currently proves only that Tailwind and the font
    are wired. */
 @theme {
-  --font-sans: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
-  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
+  --font-sans:
+    "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
+  --font-mono:
+    "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
 }
