@@ -45,3 +45,13 @@ issue lands, a stored theme is written but never restored. Also, the
 "renders unstyled" premise is wrong as the CSS stands: the catppuccin block's
 selector includes bare `:root`, so an unknown `data-theme` already falls back
 to catppuccin. Validation still matters for the chips' `aria-pressed` state.
+
+From the implementation: `Layout.astro` has a `<script is:inline define:vars>` in
+`<head>`. It receives `themeIds`, `defaultTheme` and `storageKey` from `THEMES`,
+`DEFAULT_THEME` and the new `THEME_STORAGE_KEY` in `src/lib/theme.ts`, which the
+header now also uses. No new test was added for the inline script; `resolveTheme`
+stays the tested statement of the rule. Running the built script in node:vm with
+stub storage gave stored id → kept, junk/nothing/throwing storage → catppuccin.
+Not yet checked in a real browser: the reload with no flash. Until Header's
+deferred script runs, `theme-color` and the chips' `aria-pressed` still show the
+default theme. That is issue 06 behaviour, left as it was.

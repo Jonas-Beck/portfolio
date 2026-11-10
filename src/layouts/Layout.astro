@@ -1,7 +1,8 @@
 ---
 import Footer from "../components/Footer.astro";
 import Header from "../components/Header.astro";
-import { DEFAULT_THEME, SITE } from "../site.config";
+import { THEME_STORAGE_KEY } from "../lib/theme";
+import { DEFAULT_THEME, SITE, THEMES } from "../site.config";
 import "../styles/global.css";
 
 const { title, description, author, lang, canonicalURL, socialImage } = SITE;
@@ -21,6 +22,30 @@ const ogImgUrl = socialImage && new URL(socialImage, canonicalURL).href;
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+
+    <!-- Restores the stored theme before first paint. is:inline is
+         load-bearing: a bundled script is deferred and the default theme
+         flashes first. An inline script cannot import src/lib/theme.ts, so
+         define:vars hands it the ids and default from THEMES, and this repeats
+         the rule resolveTheme states and tests. -->
+    <script
+      is:inline
+      define:vars={{
+        themeIds: THEMES.map(({ id }) => id),
+        defaultTheme: DEFAULT_THEME,
+        storageKey: THEME_STORAGE_KEY,
+      }}
+    >
+      let stored = null;
+      try {
+        stored = localStorage.getItem(storageKey);
+      } catch {
+        // Storage can throw in private mode; the default theme then applies.
+      }
+      document.documentElement.dataset.theme = themeIds.includes(stored)
+        ? stored
+        : defaultTheme;
+    </script>
 
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />

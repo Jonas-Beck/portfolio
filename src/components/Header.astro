@@ -53,7 +53,7 @@ const { navLinks, shellPrompt } = SITE;
 </header>
 
 <script>
-  import { resolveTheme } from "../lib/theme";
+  import { resolveTheme, THEME_STORAGE_KEY } from "../lib/theme";
   import { SECTIONS, type ThemeId } from "../site.config";
 
   const root = document.documentElement;
@@ -78,14 +78,15 @@ const { navLinks, shellPrompt } = SITE;
       const theme = resolveTheme(b.dataset["themeSet"]);
       showTheme(theme);
       try {
-        localStorage.setItem("theme", theme);
+        localStorage.setItem(THEME_STORAGE_KEY, theme);
       } catch {
         // Storage can throw in private mode; the choice then lasts the visit.
       }
     }),
   );
-  // Sync only, never persist, on load: persisting here would overwrite the
-  // stored choice with whatever theme the page happened to start on.
+  // Sync only, never persist, on load: the layout's pre-paint script has
+  // already restored the stored theme, and persisting here would only write
+  // it back.
   showTheme(resolveTheme(root.dataset["theme"]));
 
   // Anchors must clear the real chrome, which changes height when it wraps.
