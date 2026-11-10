@@ -113,6 +113,11 @@ html {
   outline-offset: 3px;
 }
 
+/* The default offset sits on the descenders of a monospace face. */
+a {
+  text-underline-offset: 0.2em;
+}
+
 *::-webkit-scrollbar {
   width: 11px;
   height: 11px;

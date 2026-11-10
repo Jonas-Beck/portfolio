@@ -1,19 +1,35 @@
 ---
-// 1px-stroke external-link mark, matching the edge system.
+// A link label ending in the 1px-stroke external-link mark, matching the edge
+// system. The last word and the mark never break apart, so a wrapping label
+// cannot leave the mark alone on a line. Every external link opens a new tab,
+// which the mark shows and the hidden text says.
+interface Props {
+  text: string;
+}
+
+const { text } = Astro.props;
+const cut = text.lastIndexOf(" ") + 1;
+const head = text.slice(0, cut);
+const last = text.slice(cut);
 ---
 
-<svg
-  viewBox="0 0 12 12"
-  width="12"
-  height="12"
-  fill="none"
-  stroke="currentColor"
-  stroke-width="1"
-  stroke-linecap="square"
-  aria-hidden="true"
-  focusable="false"
-  class="inline-block align-[-0.08em]"
->
-  <path d="M4.5 2.5h5v5"></path>
-  <path d="M9.5 2.5 3 9"></path>
-</svg>
+{head}
+<span class="whitespace-nowrap">
+  {`${last} `}
+  <svg
+    viewBox="0 0 12 12"
+    width="12"
+    height="12"
+    fill="none"
+    stroke="currentColor"
+    stroke-width="1"
+    stroke-linecap="square"
+    aria-hidden="true"
+    focusable="false"
+    class="inline-block align-[-0.08em]"
+  >
+    <path d="M4.5 2.5h5v5"></path>
+    <path d="M9.5 2.5 3 9"></path>
+  </svg>
+  <span class="sr-only"> (opens in a new tab)</span>
+</span>

@@ -30,7 +30,9 @@ describe("Certs", () => {
   it("links the cert to its verification page", async () => {
     const html = await render([cert({})]);
     expect(html).toContain('href="https://www.credly.com/badges/kcna"');
-    expect(html).toContain("Kubernetes and Cloud Native Associate");
+    expect(html.replace(/<[^>]*>/g, "")).toContain(
+      "Kubernetes and Cloud Native Associate",
+    );
   });
 
   it("shows the issuer and the dates", async () => {

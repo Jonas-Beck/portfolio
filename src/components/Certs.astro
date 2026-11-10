@@ -6,6 +6,8 @@ import Section from "./Section.astro";
 
 // Takes the entries already sorted: index.astro owns the order. Compact rows,
 // not contrib's cards: an exam should not read as weighty as upstream work.
+// The rows share one grid, so the abbr column fits the longest abbr and the
+// names stay aligned beneath each other.
 interface Props {
   certs: CollectionEntry<"certs">[];
 }
@@ -14,11 +16,11 @@ const { certs } = Astro.props;
 ---
 
 <Section id="certs">
-  <ul class="flex flex-col gap-5">
+  <ul class="grid grid-cols-[minmax(5.5rem,max-content)_minmax(0,1fr)] gap-x-4 gap-y-5 max-sm:grid-cols-1">
     {certs.map(({ data }) => {
       const { abbr, name, issuer, url } = data;
       return (
-        <li class="grid grid-cols-[5.5rem_minmax(0,1fr)] gap-x-4 max-sm:grid-cols-1">
+        <li class="col-span-full grid grid-cols-subgrid">
           <span class="text-accent text-lg font-extrabold">{abbr}</span>
           <div>
             <a
@@ -27,7 +29,7 @@ const { certs } = Astro.props;
               target="_blank"
               rel="noopener"
             >
-              {name} <External />
+              <External text={name} />
             </a>
             <p class="text-fg-dim mt-1 text-xs">
               {issuer} · {formatCertDates(data)}
