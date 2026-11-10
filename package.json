@@ -1,0 +1,32 @@
+{
+  "name": "jonasbeck.dk",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "tsc --noEmit --runExternalCode && astro build",
+    "preview": "astro preview",
+    "check": "tsc --noEmit --runExternalCode",
+    "test": "vitest run",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "dependencies": {
+    "@fontsource-variable/jetbrains-mono": "^5.3.0",
+    "@tailwindcss/vite": "^4.3.5",
+    "astro": "^7.4.7",
+    "tailwindcss": "^4.3.5"
+  },
+  "devDependencies": {
+    "@astrojs/ts-content-mapper": "^0.2.0",
+    "typescript": "7.1.0-beta"
+  },
+  "aube": {
+    "overrides": {
+      "@emnapi/runtime": "1.11.3",
+      "@emnapi/core": "1.11.3",
+      "@emnapi/wasi-threads": "1.2.3"
+    }
+  }
+}

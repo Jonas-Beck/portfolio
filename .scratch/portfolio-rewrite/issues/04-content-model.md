@@ -42,5 +42,5 @@ known (see issue 12).
 
 ## Done when
 
-`astro check` passes, `aube run build` fails loudly if a date is malformed or a
+`aube run check` passes, `aube run build` fails loudly if a date is malformed or a
 contrib has no prs.

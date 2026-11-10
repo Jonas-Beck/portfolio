@@ -8,15 +8,14 @@ Blocked by: 01, 02
 
 1. `prettier --check`
 2. `eslint` (no `--fix`)
-3. `astro check`
+3. `aube run check` — `tsc --noEmit --runExternalCode`
 4. `vitest run`
 
 Check mode, not fix mode: a hook that fixes during a push leaves the fix stranded
 outside the commits being pushed. `hk fix` stays available as a manual command.
 
-No pre-commit hook for now. `astro check` has to boot the Astro language server
-and see the whole project, so it cannot be scoped to staged files and would cost
-seconds on every commit — which is how `--no-verify` becomes a habit.
+No pre-commit hook for now. The typecheck has to see the whole project, so it
+cannot be scoped to staged files and would cost seconds on every commit — which is how `--no-verify` becomes a habit.
 
 ## Done when
 

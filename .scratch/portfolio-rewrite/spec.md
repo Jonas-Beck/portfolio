@@ -89,7 +89,9 @@ See the ADR. In short:
 `biome` pin in the (still untracked) `mise.toml` is dropped.
 
 **`package.json` owns what the build imports** — `astro`, `typescript`, `eslint`
-and plugins, `prettier` and plugins, `vitest`. Installed with `aube`.
+and plugins, `prettier` and plugins, `vitest`. Installed with `aube`;
+`aube-lock.yaml` is the only lockfile in the repo, and no npm, pnpm or yarn
+lockfile is ever committed.
 
 ### Formatting and linting
 
@@ -101,23 +103,50 @@ diffs unreadable. Prettier covers both through its Astro and Tailwind plugins.
 - Prettier with `prettier-plugin-astro` and `prettier-plugin-tailwindcss`.
 - ESLint flat config: `eslint-plugin-unicorn` **recommended** (the strict part),
   `typescript-eslint` **recommended** (not `strictTypeChecked`: it needs type
-  information, TypeScript cannot see `.astro`, and `astro check` already covers
+  information, TypeScript cannot see `.astro` without the content mapper, and
+`tsc` already covers
   that ground), `eslint-plugin-astro` recommended via `astro-eslint-parser`,
   `eslint-config-prettier` last.
 - `unicorn/filename-case` ships in unicorn-recommended defaulting to kebabCase,
   which flags every `.astro` component. Scope it: PascalCase under
   `src/components/**`, kebab-case elsewhere.
 
-### tsconfig
+### tsconfig and type-checking
 
 `astro/tsconfigs/strictest`. `noUncheckedIndexedAccess` and
 `exactOptionalPropertyTypes` are exactly the rules that catch "this contrib has
 no image" — the failure mode this data model actually has.
 
+Type-checking is **`tsc --noEmit --runExternalCode`**, not `astro check`. Astro
+7 deprecates `astro check`, it refuses TypeScript 7.0 outright, and
+`@astrojs/check@0.9.12` additionally crashes on Node 26. Astro's own replacement
+is `@astrojs/ts-content-mapper`, registered through a `contentMappers` entry in
+`tsconfig.json`, which lets plain `tsc` type-check `.astro` files. It requires
+TypeScript 7.1+, so `typescript` is pinned to `7.1.0-beta`. `--runExternalCode`
+is required because content mappers execute code from `node_modules`.
+
+Verified: a type error in `.astro` frontmatter is reported with the correct file
+and line, and exits non-zero.
+
+### The emnapi override
+
+`package.json#aube.overrides` pins `@emnapi/runtime`, `@emnapi/core` and
+`@emnapi/wasi-threads` to their 1.x releases. Without it, a cold install
+resolves `@emnapi/runtime@2.0.0-beta.2` — a prerelease matched by a
+`^1.7.1 || ^2.0.0-alpha.4` range in the WASM runtime chain under
+`@astrojs/astro2tsx` — which is ABI-incompatible with the 1.x
+`@napi-rs/wasm-runtime` it gets paired with, and throws
+`this.bridge.setLastError is not a function` on import.
+
+That single fault is what breaks both `@astrojs/check` and
+`@astrojs/ts-content-mapper`. Verified by cold install in both directions: the
+prerelease returns without the override and disappears with it. Revisit when the
+upstream chain stops accepting emnapi prereleases.
+
 ### Hooks
 
 `hk`, pre-push only to start: `prettier --check`, `eslint` (no `--fix`),
-`astro check`, `vitest run`. Check mode, not fix mode — a hook that fixes during
+`aube run check` (`tsc`), `vitest run`. Check mode, not fix mode — a hook that fixes during
 a push strands the fix outside the commits being pushed. `hk fix` stays available
 manually. A pre-commit fix hook can be attached to the same steps later.
 

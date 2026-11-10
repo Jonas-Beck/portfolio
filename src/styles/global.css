@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@import "@fontsource-variable/jetbrains-mono";
+
+/* The design system's tokens and the three terminal themes land here in the
+   component port. This file currently proves only that Tailwind and the font
+   are wired. */
+@theme {
+  --font-sans: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
+  --font-mono: "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
+}
