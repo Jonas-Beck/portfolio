@@ -1,13 +1,15 @@
 import { defineCollection } from "astro:content";
 import { file, type Loader } from "astro/loaders";
 import { z } from "astro/zod";
+import { REPO_PATTERN } from "./lib/contrib";
+import { YEAR_MONTH_PATTERN } from "./lib/experience";
 
 // See docs/adr/0001-content-collections-with-derived-contrib-state.md.
 
 // Zero-padded, so plain string comparison orders these chronologically.
 const yearMonth = z
   .string()
-  .regex(/^\d{4}-(0[1-9]|1[0-2])$/, "Expected a date as YYYY-MM");
+  .regex(YEAR_MONTH_PATTERN, "Expected a date as YYYY-MM");
 
 // `file()` only logs when the file is missing, is not valid YAML, or holds an
 // entry with no id, and the build then passes with entries absent. Here every
@@ -52,9 +54,7 @@ const contrib = defineCollection({
   schema: z.strictObject({
     slug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "Expected kebab-case"),
     name: z.string().min(1),
-    repo: z
-      .string()
-      .regex(/^[\w.-]+\/[\w.-]+$/, "Expected a repository as owner/name"),
+    repo: z.string().regex(REPO_PATTERN, "Expected a repository as owner/name"),
     summary: z.string().min(1),
     note: z.string().min(1).optional(),
     image: z.string().min(1).optional(),

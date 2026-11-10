@@ -1,6 +1,6 @@
 # Pure helpers in src/lib, with Vitest
 
-Status: ready-for-agent
+Status: done
 
 Blocked by: 04
 
@@ -49,3 +49,21 @@ runs `mise run test`, and `vitest run` exits 1 when it finds no test files, so
 without the flag every push was red before any test existed. Once this issue
 lands real tests the flag only hides an empty suite, which is why removing it is
 in the Done when above.
+
+Landed with two departures from the text above.
+
+`resolveTheme` takes `stored` only, not `(stored, prefersDark)`. All three themes
+are dark, so `prefers-color-scheme` has nothing to choose between, and an unused
+parameter fails `strictest`. Add it back alongside the first light theme. The
+spec's Theming section is updated to match.
+
+The render assertions need section components, which are 06's to port. So
+`src/components/Contrib.astro` and `Experience.astro` exist here as unstyled
+structure: they take collection entries as props (`contribs`, `experience`),
+and `Contrib.test.ts` / `Experience.test.ts` pin the media panel, one link per
+pr and the current-role badge. 06 ports the baseline markup onto them rather
+than replacing them.
+
+`REPO_PATTERN` and `YEAR_MONTH_PATTERN` now live in `src/lib` and the schemas
+in `src/content.config.ts` import them, so the helpers and the schema validate
+against one definition.

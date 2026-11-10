@@ -1,0 +1,22 @@
+---
+import type { CollectionEntry } from "astro:content";
+import { isCurrentRole } from "../lib/experience";
+
+// Structure only: issue 06 ports the baseline styling onto this. The render
+// assertions in Experience.test.ts pin what the port must keep.
+
+interface Props {
+  experience: CollectionEntry<"experience">[];
+}
+
+const { experience } = Astro.props;
+---
+
+<section id="experience">
+  {experience.map(({ data }) => (
+    <div>
+      <h3>{data.position}</h3>
+      {isCurrentRole(data) && <span data-current-role>present</span>}
+    </div>
+  ))}
+</section>

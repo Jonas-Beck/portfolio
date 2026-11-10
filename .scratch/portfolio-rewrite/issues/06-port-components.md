@@ -33,3 +33,13 @@ guards rather than loosening the config.
 
 The page renders all three sections, `mise run typecheck` passes, and no component
 contains prose that is not from config or a collection.
+
+## Comments
+
+05 created `Contrib.astro` and `Experience.astro` as unstyled structure with
+render tests beside them. Keep their props interface: each takes collection
+entries (`contribs`, `experience`), and `index.astro` does `getCollection` and
+`sortExperience`. Port the baseline markup onto them. The badge is found by its
+`data-current-role` attribute and the media panel by `<figure>`, so keep both
+or update the tests in the same change. Neither stub wires `deriveContribState`,
+`repoUrl` or `formatDateRange` yet; that is this issue.

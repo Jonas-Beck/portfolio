@@ -35,7 +35,8 @@ _Avoid_: change, contribution, commit, link
 **contrib state**:
 The word shown beside a contrib, derived rather than written: `maintainer` where
 Jonas holds that role in the upstream project, otherwise rolled up from the
-states of its prs.
+states of its prs: the most advanced state true of every pr, so `merged` only
+once all are merged and `open` while any is still open.
 _Avoid_: status, badge
 
 ### Boundaries

@@ -29,3 +29,12 @@ and the page renders unstyled.
 Switching themes persists across a reload with no flash, and manually setting
 `localStorage` to a junk theme id falls back to Catppuccin instead of rendering
 unstyled.
+
+## Comments
+
+From 05: `resolveTheme(stored)` takes no `prefersDark`. Every theme is dark, so
+there is no `prefers-color-scheme` fallback (point 2 above predates that).
+Also, a `<script is:inline>` is not bundled, so it cannot import
+`src/lib/theme.ts`. Decide here how the script gets the logic, e.g. serialise
+the valid ids and default into it with `define:vars`, and keep `resolveTheme`
+as the tested statement of the same rule.

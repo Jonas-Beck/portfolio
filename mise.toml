@@ -27,9 +27,8 @@ run = "tsc --noEmit --runExternalCode"
 
 [tasks.test]
 description = "Run the test suite once"
-# --passWithNoTests only until issue 05 lands the first test, since `vitest run`
-# exits 1 when it finds no test files. Drop the flag then.
-run = "vitest run --passWithNoTests"
+# No --passWithNoTests: an empty suite should fail the gate, not pass it.
+run = "vitest run"
 
 [tasks.format]
 description = "Format the tree in place"

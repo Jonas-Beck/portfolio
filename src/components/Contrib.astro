@@ -1,0 +1,34 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+// Structure only: issue 06 ports the baseline styling onto this. The render
+// assertions in Contrib.test.ts pin what the port must keep.
+
+interface Props {
+  contribs: CollectionEntry<"contrib">[];
+}
+
+const { contribs } = Astro.props;
+---
+
+<section id="contrib">
+  {contribs.map(({ data: { name, image, prs } }) => (
+    <article>
+      <h3>{name}</h3>
+      <ul>
+        {prs.map(({ title, url }) => (
+          <li>
+            <a href={url} target="_blank" rel="noopener">
+              {title}
+            </a>
+          </li>
+        ))}
+      </ul>
+      {image && (
+        <figure>
+          <img src={image} alt={`${name} in use`} />
+        </figure>
+      )}
+    </article>
+  ))}
+</section>

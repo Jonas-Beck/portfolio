@@ -106,10 +106,6 @@ binaries directly rather than through a package manager.
 The pre-push hook, CI and a human all run that one task, so what must pass is
 defined once. The former `check` script, which was `tsc`, is now `typecheck`.
 
-One caveat while this is being built: until issue 05 lands the first test, `test`
-runs `vitest run --passWithNoTests` and passes vacuously, so the gate is two real
-checks and a placeholder.
-
 **`package.json` owns what the build imports** — `astro`, `typescript`,
 `prettier` and plugins, `vitest`. Installed with `aube`;
 `aube-lock.yaml` is the only lockfile in the repo, and no npm, pnpm or yarn
@@ -280,9 +276,10 @@ Two additions:
 
 - `THEMES` in `src/site.config.ts` (id + label) as the single source of truth, so
   the header chips and the CSS blocks cannot drift apart.
-- A `<script is:inline>` in `<head>` that reads `localStorage`, falls back to
-  `prefers-color-scheme`, validates against `THEMES` and sets `data-theme` before
-  paint. `is:inline` matters: without it Astro bundles and defers the script,
+- A `<script is:inline>` in `<head>` that reads `localStorage`, validates
+  against `THEMES` (falling back to the default) and sets `data-theme` before
+  paint. There is no `prefers-color-scheme` fallback: every theme is dark, so
+  the preference has nothing to choose between. `is:inline` matters: without it Astro bundles and defers the script,
   giving a flash of the wrong theme. Validation matters: a stale stored value
   naming a deleted theme currently sets a `data-theme` no CSS block matches, and
   the page renders unstyled.
