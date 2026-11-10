@@ -1,0 +1,43 @@
+# Pure helpers in src/lib, with Vitest
+
+Status: ready-for-agent
+
+Blocked by: 04
+
+Vitest configured with `getViteConfig` from `astro/config` so aliases and
+collections resolve. Tests sit beside their source as `*.test.ts`.
+
+## Helpers
+
+- **`deriveContribState(contrib)`** — `"maintainer"` when `maintainer` is true,
+  otherwise rolled up from `prs[].state`. Decide and document the rollup: all
+  merged → `"merged"`; any open → `"open"`; mixed → the most advanced state that
+  is true of all prs.
+- **`formatDateRange(start, end)`** — `2024-04`, `2024-12` → `"Apr 2024 — Dec 2024"`;
+  absent `end` → `"Aug 2026 — Present"`. "Present" is a *display* string only; it
+  never appears in the data.
+- **`isCurrentRole(entry)`** — true when `end` is absent. Drives the badge.
+- **`repoUrl(repo)`** — `"backstage/backstage"` → `"https://github.com/backstage/backstage"`.
+- **`resolveTheme(stored, prefersDark)`** — returns a valid theme id, falling back
+  to the default when `stored` is absent or names a theme not in `THEMES`.
+- **`sortExperience(entries)`** — newest first, by `start`. Sound now that dates
+  are sortable.
+
+## Render assertions
+
+A handful via `experimental_AstroContainer`:
+
+- a contrib with no `image` renders no media panel
+- a contrib with two `prs` renders two links
+- the current role renders the badge; a past role does not
+
+## Out of scope
+
+No page snapshot tests: they break on every design tweak and train you to run
+`-u` without reading. No DOM-level theme-switcher test; `resolveTheme` covers the
+logic.
+
+## Done when
+
+`aube run test` passes and every helper above has at least its empty/absent case
+covered.
