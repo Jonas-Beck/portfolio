@@ -1,6 +1,6 @@
 # Port the components to three sections
 
-Status: ready-for-agent
+Status: done
 
 Blocked by: 04, 05
 
@@ -43,3 +43,19 @@ entries (`contribs`, `experience`), and `index.astro` does `getCollection` and
 `data-current-role` attribute and the media panel by `<figure>`, so keep both
 or update the tests in the same change. Neither stub wires `deriveContribState`,
 `repoUrl` or `formatDateRange` yet; that is this issue.
+
+Done. Calls made in the port, for review:
+
+- Whoami holds name, title, summary, lede, portrait and contact. The baseline
+  Hero's Upstream and Roles rail panels are dropped: like About's second
+  paragraph, they restated the other two sections.
+- The footer has no copyright year (`new Date()` breaks "same output on every
+  machine") and no "built with Astro".
+- `shellPrompt` added to `site.config.ts`; header and footer both read it.
+- An `open` contrib state renders dim, not green: green is live state only.
+- Short chrome labels stay in markup: `skip to content`, `theme:`, `mail`,
+  `©`, and the `current` badge. Read as interface chrome, not prose. Move them
+  to config if that reading is wrong.
+- `SITE.whoami.summary` is word for word `SITE.description`, so whoami shows
+  the same sentence the meta description carries, plus the lede. A content
+  call for Jonas.

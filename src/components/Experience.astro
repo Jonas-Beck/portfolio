@@ -1,10 +1,10 @@
 ---
 import type { CollectionEntry } from "astro:content";
-import { isCurrentRole } from "../lib/experience";
+import { formatDateRange, isCurrentRole } from "../lib/experience";
+import Check from "./icons/Check.astro";
+import Section from "./Section.astro";
 
-// Structure only: issue 06 ports the baseline styling onto this. The render
-// assertions in Experience.test.ts pin what the port must keep.
-
+// Takes the entries already sorted: index.astro owns the order.
 interface Props {
   experience: CollectionEntry<"experience">[];
 }
@@ -12,11 +12,44 @@ interface Props {
 const { experience } = Astro.props;
 ---
 
-<section id="experience">
-  {experience.map(({ data }) => (
-    <div>
-      <h3>{data.position}</h3>
-      {isCurrentRole(data) && <span data-current-role>present</span>}
-    </div>
-  ))}
-</section>
+<Section id="experience">
+  {experience.map(({ data }) => {
+    const { company, position, start, end, summary } = data;
+    const current = isCurrentRole(data);
+    return (
+      <div
+        class:list={[
+          "border-edge relative border-l pb-7 pl-6",
+          "before:absolute before:top-2 before:-left-[4.5px] before:h-2 before:w-2",
+          current ? "before:bg-ok" : "before:bg-edge",
+        ]}
+      >
+        <div class="flex flex-wrap items-baseline gap-x-3.5 gap-y-1">
+          <span class="text-fg text-xl font-bold">{company}</span>
+          <h3 class="text-fg-dim text-xl font-medium">{position}</h3>
+          {current && (
+            <span
+              data-current-role
+              class="bg-ok text-bg px-2 text-xs font-bold"
+            >
+              current
+            </span>
+          )}
+          <span class="text-fg-dim ml-auto text-xs max-sm:ml-0 max-sm:w-full">
+            {formatDateRange(start, end)}
+          </span>
+        </div>
+        <ul class="mt-3 flex list-none flex-col gap-2.5">
+          {summary.map((line) => (
+            <li class="text-fg-dim grid max-w-[72ch] grid-cols-[1.25rem_1fr] gap-2.5 text-base">
+              <span class="text-fg-dim">
+                <Check />
+              </span>
+              <span>{line}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    );
+  })}
+</Section>

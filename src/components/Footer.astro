@@ -1,0 +1,40 @@
+---
+import { SITE } from "../site.config";
+import External from "./icons/External.astro";
+
+// No copyright year: `new Date()` would make the page differ by build date.
+const { author, email, shellPrompt, socialLinks } = SITE;
+---
+
+<footer class="border-edge bg-bg-alt mt-16 border-t">
+  <div class="text-fg-dim mx-auto flex max-w-[82rem] flex-wrap justify-between gap-5 px-5 pt-4 pb-7 text-xs">
+    <ul class="flex flex-wrap gap-5.5">
+      {socialLinks.map(({ label, href }) => (
+        <li>
+          <a
+            class="text-path hover:underline"
+            href={href}
+            target="_blank"
+            rel="noopener"
+          >
+            {label.toLowerCase()} <External />
+          </a>
+        </li>
+      ))}
+      <li>
+        <a class="text-path hover:underline" href={`mailto:${email}`}>
+          mail
+        </a>
+      </li>
+    </ul>
+    <p>© {author}</p>
+  </div>
+  <div
+    class="text-fg-dim mx-auto max-w-[82rem] px-5 pb-6 text-xs"
+    aria-hidden="true"
+  >
+    <span class="text-key">{shellPrompt}</span>
+    <span class="text-path">:~</span>${" "}
+    <span class="caret bg-key inline-block h-[0.9em] w-[0.5em] align-[-0.1em]"></span>
+  </div>
+</footer>

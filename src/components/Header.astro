@@ -1,0 +1,147 @@
+---
+import { DEFAULT_THEME, SITE, THEMES } from "../site.config";
+
+const { navLinks, shellPrompt } = SITE;
+---
+
+<a
+  href={navLinks[0].href}
+  class="bg-key text-bg sr-only px-4 py-2 text-sm font-bold focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-100"
+>
+  skip to content
+</a>
+
+<header id="chrome" class="border-edge bg-bg sticky top-0 z-50 border-b">
+  <div class="border-edge bg-bg-alt text-fg-dim border-b text-xs">
+    <div class="mx-auto flex max-w-[82rem] flex-wrap items-center justify-between gap-x-4 gap-y-2 px-5 py-2.5">
+      <span class="text-key">
+        <span class="font-bold">{shellPrompt}</span>
+        <span class="text-path">:~</span>
+        <span class="text-path" id="cwd"></span>$
+      </span>
+      <div class="flex items-center gap-2" role="group" aria-label="Theme">
+        <span>theme:</span>
+        {THEMES.map(({ id, label }) => (
+          <button
+            type="button"
+            data-theme-set={id}
+            aria-pressed={id === DEFAULT_THEME}
+            class="border-fg-dim text-fg-dim hover:text-fg hover:border-fg aria-pressed:border-key aria-pressed:bg-key aria-pressed:text-bg cursor-pointer border px-2 py-0.5 text-xs"
+          >
+            {label}
+          </button>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <nav
+    class="mx-auto flex max-w-[82rem] flex-wrap items-center gap-x-7 gap-y-1 px-5 py-2"
+    aria-label="Sections"
+  >
+    {navLinks.map(({ label, href }, i) => (
+      <a
+        class="nav-item text-fg-dim hover:text-fg aria-[current=true]:text-key text-sm"
+        href={href}
+        accesskey={String(i + 1)}
+        aria-current="false"
+      >
+        <span class="text-key">{i + 1}</span>_{label}
+      </a>
+    ))}
+  </nav>
+</header>
+
+<script>
+  import { resolveTheme } from "../lib/theme";
+  import { SECTIONS, type ThemeId } from "../site.config";
+
+  const root = document.documentElement;
+  const buttons = Array.from(
+    document.querySelectorAll<HTMLButtonElement>("[data-theme-set]"),
+  );
+
+  const showTheme = (theme: ThemeId) => {
+    root.dataset["theme"] = theme;
+    buttons.forEach((b) =>
+      b.setAttribute("aria-pressed", String(b.dataset["themeSet"] === theme)),
+    );
+    // Keep the browser chrome on the theme the reader actually chose.
+    const bg = getComputedStyle(root).getPropertyValue("--t-bg").trim();
+    document
+      .querySelector('meta[name="theme-color"]')
+      ?.setAttribute("content", bg);
+  };
+
+  buttons.forEach((b) =>
+    b.addEventListener("click", () => {
+      const theme = resolveTheme(b.dataset["themeSet"]);
+      showTheme(theme);
+      try {
+        localStorage.setItem("theme", theme);
+      } catch {
+        // Storage can throw in private mode; the choice then lasts the visit.
+      }
+    }),
+  );
+  // Sync only, never persist, on load: persisting here would overwrite the
+  // stored choice with whatever theme the page happened to start on.
+  showTheme(resolveTheme(root.dataset["theme"]));
+
+  // Anchors must clear the real chrome, which changes height when it wraps.
+  const chrome = document.querySelector<HTMLElement>("#chrome");
+  const setScrollPadding = () => {
+    if (!chrome) return;
+    root.style.scrollPaddingTop = `${chrome.offsetHeight + 16}px`;
+  };
+  setScrollPadding();
+  addEventListener("resize", setScrollPadding, { passive: true });
+
+  // Active section. A 0.5 threshold never fires on sections taller than the
+  // viewport, so track whichever section crosses the upper band instead.
+  const navItems = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>(".nav-item"),
+  );
+  const cwd = document.querySelector("#cwd");
+
+  const markCurrent = (id: string) => {
+    navItems.forEach((item) =>
+      item.setAttribute(
+        "aria-current",
+        String(item.getAttribute("href") === `#${id}`),
+      ),
+    );
+    // The first section is home, so the prompt shows no path for it.
+    if (cwd) cwd.textContent = id === SECTIONS[0] ? "" : `/${id}`;
+  };
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) markCurrent(entry.target.id);
+      });
+    },
+    { rootMargin: "-35% 0px -58% 0px", threshold: 0 },
+  );
+
+  const sections = Array.from(document.querySelectorAll("section"));
+  const observeSections = () => sections.forEach((s) => observer.observe(s));
+  observeSections();
+
+  // A short last section never crosses the band on a tall viewport, so the
+  // bottom of the page marks it directly.
+  addEventListener(
+    "scroll",
+    () => {
+      const last = sections.at(-1);
+      const atEnd = scrollY + innerHeight >= document.body.scrollHeight - 2;
+      if (atEnd && last) markCurrent(last.id);
+    },
+    { passive: true },
+  );
+
+  document.onvisibilitychange = () => {
+    if (document.visibilityState === "hidden") observer.disconnect();
+    else observeSections();
+  };
+</script>

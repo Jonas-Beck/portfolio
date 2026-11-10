@@ -1,0 +1,48 @@
+---
+import Footer from "../components/Footer.astro";
+import Header from "../components/Header.astro";
+import { DEFAULT_THEME, SITE } from "../site.config";
+import "../styles/global.css";
+
+const { title, description, author, lang, canonicalURL, socialImage } = SITE;
+const ogImgUrl = socialImage && new URL(socialImage, canonicalURL).href;
+---
+
+<!doctype html>
+<html lang={lang} data-theme={DEFAULT_THEME} class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="author" content={author} />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The default theme's background until Header's script reads the live
+         one; a meta tag cannot reach a CSS variable. -->
+    <meta name="theme-color" content="#1e1e2e" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content={canonicalURL} />
+    <meta property="twitter:title" content={title} />
+    <meta property="twitter:description" content={description} />
+
+    {ogImgUrl && (
+      <>
+        <meta property="og:image" content={ogImgUrl} />
+        <meta property="twitter:image" content={ogImgUrl} />
+      </>
+    )}
+  </head>
+  <body class="bg-bg text-fg font-sans">
+    <Header />
+    <main class="mx-auto max-w-[82rem] px-5">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

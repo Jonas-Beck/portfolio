@@ -1,0 +1,22 @@
+---
+import type { SectionId } from "../site.config";
+
+// A section's command, anchor and nav label are the same word, so the id is
+// the only prop: the heading cannot name something the anchor does not.
+interface Props {
+  id: SectionId;
+}
+
+const { id } = Astro.props;
+---
+
+<section id={id} class="pt-14">
+  <div class="mb-6 flex items-baseline gap-4">
+    <h2 class="text-key tracking-display text-4xl font-extrabold">
+      <span class="text-key font-normal">$</span>
+      {id}
+    </h2>
+    <span class="border-edge flex-1 -translate-y-1.5 border-t border-dashed"></span>
+  </div>
+  <slot />
+</section>

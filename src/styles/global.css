@@ -1,12 +1,161 @@
 @import "tailwindcss";
 @import "@fontsource-variable/jetbrains-mono";
 
-/* The design system's tokens and the three terminal themes land here in the
-   component port. This file currently proves only that Tailwind and the font
-   are wired. */
+/* ──────────────────────────────────────────────────────────────
+   ANSI role palette. Colour carries meaning here, the same way a
+   shell does: state is readable before the words are. Themes are
+   real terminal themes; catppuccin is the default.
+   ────────────────────────────────────────────────────────────── */
 @theme {
   --font-sans:
     "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
   --font-mono:
     "JetBrains Mono Variable", ui-monospace, SFMono-Regular, monospace;
+
+  /* role tokens — resolved per theme below */
+  --color-bg: var(--t-bg);
+  --color-bg-alt: var(--t-bg-alt);
+  --color-bg-soft: var(--t-bg-soft);
+  --color-fg: var(--t-fg);
+  --color-fg-dim: var(--t-fg-dim);
+  --color-edge: var(--t-edge);
+  --color-ok: var(--t-ok);
+  --color-path: var(--t-path);
+  --color-key: var(--t-key);
+  --color-accent: var(--t-accent);
+
+  --text-xs: 0.78125rem;
+  --text-xs--line-height: 1.125rem;
+  --text-sm: 0.8125rem;
+  --text-sm--line-height: 1.25rem;
+  --text-base: 0.875rem;
+  --text-base--line-height: 1.5rem;
+  --text-lg: 0.90625rem;
+  --text-lg--line-height: 1.625rem;
+  --text-xl: 1.0625rem;
+  --text-xl--line-height: 1.5rem;
+  --text-2xl: 1.1875rem;
+  --text-2xl--line-height: 1.625rem;
+  --text-3xl: 1.625rem;
+  --text-3xl--line-height: 1.1;
+  --text-4xl: 1.875rem;
+  --text-4xl--line-height: 1.1;
+  --text-5xl: 2.125rem;
+  --text-5xl--line-height: 1;
+  --text-6xl: 3.25rem;
+  --text-6xl--line-height: 0.95;
+  --text-7xl: 4.875rem;
+  --text-7xl--line-height: 0.92;
+  --text-8xl: 6rem;
+  --text-8xl--line-height: 0.92;
+
+  --tracking-display: -0.04em;
+  --tracking-key: 0.08em;
+}
+
+/* One block per entry in THEMES (src/site.config.ts), keyed by its id. A
+   theme added there without a block here silently renders as catppuccin,
+   because the bare :root below matches every data-theme. */
+:root,
+:root[data-theme="catppuccin"] {
+  --t-bg: #1e1e2e;
+  --t-bg-alt: #181825;
+  --t-bg-soft: #313244;
+  --t-fg: #cdd6f4;
+  --t-fg-dim: #a6adc8;
+  --t-edge: #45475a;
+  --t-ok: #a6e3a1;
+  --t-path: #89b4fa;
+  --t-key: #f9e2af;
+  --t-accent: #fab387;
+}
+
+:root[data-theme="gruvbox"] {
+  --t-bg: #282828;
+  --t-bg-alt: #32302f;
+  --t-bg-soft: #3c3836;
+  --t-fg: #ebdbb2;
+  --t-fg-dim: #a89984;
+  --t-edge: #504945;
+  --t-ok: #b8bb26;
+  --t-path: #83a598;
+  --t-key: #fabd2f;
+  --t-accent: #fe8019;
+}
+
+:root[data-theme="tokyo"] {
+  --t-bg: #1a1b26;
+  --t-bg-alt: #1f2335;
+  --t-bg-soft: #24283b;
+  --t-fg: #c0caf5;
+  --t-fg-dim: #9aa5ce;
+  --t-edge: #3b4261;
+  --t-ok: #9ece6a;
+  --t-path: #7aa2f7;
+  --t-key: #e0af68;
+  --t-accent: #ff9e64;
+}
+
+/* Browser surfaces belong to the design system too. */
+html {
+  color-scheme: dark;
+  scrollbar-color: var(--color-edge) var(--color-bg-alt);
+  caret-color: var(--color-accent);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-key);
+  outline-offset: 3px;
+}
+
+*::-webkit-scrollbar {
+  width: 11px;
+  height: 11px;
+}
+*::-webkit-scrollbar-track {
+  background: var(--color-bg-alt);
+}
+*::-webkit-scrollbar-thumb {
+  background: var(--color-edge);
+  border: 2px solid var(--color-bg-alt);
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: var(--color-fg-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .caret {
+    animation: none;
+    opacity: 1;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@keyframes caret-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.caret {
+  animation: caret-blink 1.06s steps(2, end) infinite;
 }

@@ -38,3 +38,10 @@ Also, a `<script is:inline>` is not bundled, so it cannot import
 `src/lib/theme.ts`. Decide here how the script gets the logic, e.g. serialise
 the valid ids and default into it with `define:vars`, and keep `resolveTheme`
 as the tested statement of the same rule.
+
+From 06: the header script now syncs chips to `data-theme` on load without
+persisting, and persists only on click, through `resolveTheme`. Until this
+issue lands, a stored theme is written but never restored. Also, the
+"renders unstyled" premise is wrong as the CSS stands: the catppuccin block's
+selector includes bare `:root`, so an unknown `data-theme` already falls back
+to catppuccin. Validation still matters for the chips' `aria-pressed` state.

@@ -44,6 +44,43 @@ describe("Contrib", () => {
     expect(html).toContain("<figure");
   });
 
+  // The state is matched by its data attribute, as the badge in
+  // Experience.test.ts is, so wording and styling stay free to change.
+  it("shows open while any pr is still open", async () => {
+    const html = await render([
+      contrib({
+        prs: [
+          {
+            title: "feat(events): kafka pull support",
+            url: "https://github.com/backstage/backstage/pull/1",
+            state: "merged",
+          },
+          {
+            title: "feat(events): kafka push support",
+            url: "https://github.com/backstage/backstage/pull/2",
+            state: "open",
+          },
+        ],
+      }),
+    ]);
+    expect(html).toContain('data-contrib-state="open"');
+  });
+
+  it("shows merged once every pr is merged", async () => {
+    const html = await render([contrib({})]);
+    expect(html).toContain('data-contrib-state="merged"');
+  });
+
+  it("shows maintainer over the pr states", async () => {
+    const html = await render([contrib({ maintainer: true })]);
+    expect(html).toContain('data-contrib-state="maintainer"');
+  });
+
+  it("links the upstream repository", async () => {
+    const html = await render([contrib({})]);
+    expect(html).toContain('href="https://github.com/backstage/backstage"');
+  });
+
   it("renders one link per pr", async () => {
     const html = await render([
       contrib({

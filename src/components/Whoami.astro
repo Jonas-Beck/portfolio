@@ -1,0 +1,65 @@
+---
+import { SITE, type SectionId } from "../site.config";
+import External from "./icons/External.astro";
+
+// The baseline's Hero and About. Its rail panels and About's second paragraph
+// restated experience and contrib, which have sections of their own, so only
+// who and how to reach him remain here.
+const id: SectionId = "whoami";
+const { email, socialLinks } = SITE;
+const { name, title, summary, lede, portrait } = SITE.whoami;
+---
+
+<section
+  id={id}
+  class="grid items-start gap-9 py-12 lg:grid-cols-[minmax(0,1fr)_18.75rem]"
+>
+  <div>
+    <p class="text-fg-dim text-sm">
+      <span class="text-key">$</span> {id}
+    </p>
+    <h1 class="text-accent tracking-display mt-3 text-6xl font-extrabold sm:text-7xl md:text-8xl">
+      {name}
+      <span
+        class="caret bg-key ml-0.5 inline-block h-[0.76em] w-[0.46em] align-[-0.08em]"
+        aria-hidden="true"
+      ></span>
+    </h1>
+    <p class="text-fg mt-5 text-2xl">
+      <span class="text-key">&gt;</span>
+      {title}
+    </p>
+    <p class="text-fg-dim mt-3 max-w-[66ch] text-lg">{summary}</p>
+    <p class="text-fg-dim mt-3 max-w-[66ch] text-lg">{lede}</p>
+
+    <ul class="mt-7 flex flex-wrap gap-3.5">
+      <li>
+        <a
+          class="bg-accent text-bg border-accent hover:bg-bg hover:text-accent block border px-6 py-2.5 text-sm font-bold transition-colors"
+          href={`mailto:${email}`}
+        >
+          {email}
+        </a>
+      </li>
+      {socialLinks.map(({ label, href }) => (
+        <li>
+          <a
+            class="border-fg-dim text-fg hover:border-fg block border px-6 py-2.5 text-sm transition-colors"
+            href={href}
+            target="_blank"
+            rel="noopener"
+          >
+            {label.toLowerCase()} <External />
+          </a>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <figure class="border-edge bg-bg-alt max-w-[18.75rem] border p-2.5">
+    <img class="w-full" src={portrait} width="260" height="260" alt={name} />
+    <figcaption class="text-fg-dim mt-2.5 text-xs">
+      {portrait.replace("/", "")}
+    </figcaption>
+  </figure>
+</section>

@@ -30,6 +30,8 @@ interface SiteConfig {
   socialImage: string | undefined;
   siteLogo: string;
   email: string;
+  /** user@host shown in the header status bar and the footer prompt. */
+  shellPrompt: string;
   navLinks: NavLinks;
   socialLinks: { label: string; href: string }[];
   whoami: {
@@ -51,6 +53,7 @@ export const SITE: SiteConfig = {
   socialImage: undefined,
   siteLogo: "/jonas-small.jpg",
   email: "contact@jonasbeck.dk",
+  shellPrompt: "jonas@jonasbeck.dk",
   navLinks: [
     { label: "whoami", href: "#whoami" },
     { label: "experience", href: "#experience" },

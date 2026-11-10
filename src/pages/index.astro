@@ -1,17 +1,18 @@
 ---
-import "../styles/global.css";
+import { getCollection } from "astro:content";
+import Contrib from "../components/Contrib.astro";
+import Experience from "../components/Experience.astro";
+import Whoami from "../components/Whoami.astro";
+import Layout from "../layouts/Layout.astro";
+import { sortExperience } from "../lib/experience";
+
+const experience = sortExperience(await getCollection("experience"));
+// File order is the display order Jonas chose.
+const contribs = await getCollection("contrib");
 ---
 
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Jonas Beck — Platform Engineer</title>
-  </head>
-  <body class="bg-black font-mono text-neutral-200">
-    <main class="p-6">
-      <p>scaffold</p>
-    </main>
-  </body>
-</html>
+<Layout>
+  <Whoami />
+  <Experience experience={experience} />
+  <Contrib contribs={contribs} />
+</Layout>

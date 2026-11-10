@@ -1,8 +1,8 @@
 ---
 import type { CollectionEntry } from "astro:content";
-
-// Structure only: issue 06 ports the baseline styling onto this. The render
-// assertions in Contrib.test.ts pin what the port must keep.
+import { deriveContribState, repoUrl } from "../lib/contrib";
+import External from "./icons/External.astro";
+import Section from "./Section.astro";
 
 interface Props {
   contribs: CollectionEntry<"contrib">[];
@@ -11,24 +11,87 @@ interface Props {
 const { contribs } = Astro.props;
 ---
 
-<section id="contrib">
-  {contribs.map(({ data: { name, image, prs } }) => (
-    <article>
-      <h3>{name}</h3>
-      <ul>
-        {prs.map(({ title, url }) => (
-          <li>
-            <a href={url} target="_blank" rel="noopener">
-              {title}
-            </a>
-          </li>
-        ))}
-      </ul>
-      {image && (
-        <figure>
-          <img src={image} alt={`${name} in use`} />
-        </figure>
-      )}
-    </article>
-  ))}
-</section>
+<Section id="contrib">
+  <div class="flex flex-col gap-5">
+    {contribs.map(({ data }) => {
+      const { name, repo, summary, note, image, prs } = data;
+      const state = deriveContribState(data);
+      return (
+        <article
+          class:list={[
+            "border-edge bg-bg-alt grid border",
+            image &&
+              "lg:grid-cols-[minmax(0,1fr)_26rem] xl:grid-cols-[minmax(0,1fr)_32rem]",
+          ]}
+        >
+          <div class="flex flex-col p-7">
+            <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1.5">
+              <h3 class="text-accent tracking-display text-3xl font-extrabold">
+                {name}
+              </h3>
+              {/* Green is live state only, and an open pr is not yet live. */}
+              <span
+                data-contrib-state={state}
+                class:list={[
+                  "ml-auto text-xs max-sm:ml-0",
+                  state === "open" ? "text-fg-dim" : "text-ok",
+                ]}
+              >
+                {state}
+              </span>
+            </div>
+            <p class="text-fg-dim mt-3 max-w-[52ch] text-base">{summary}</p>
+
+            <ul class="mt-4 flex flex-col gap-1.5 text-sm">
+              {prs.map(({ title, url }) => (
+                <li>
+                  <a
+                    class="text-path hover:underline"
+                    href={url}
+                    target="_blank"
+                    rel="noopener"
+                  >
+                    {title} <External />
+                  </a>
+                </li>
+              ))}
+            </ul>
+
+            <div class="mt-auto pt-6">
+              <hr class="border-edge border-dashed" />
+              <p class="text-fg-dim mt-3.5 text-xs">
+                <a
+                  class="text-path hover:underline"
+                  href={repoUrl(repo)}
+                  target="_blank"
+                  rel="noopener"
+                >
+                  {repo}
+                </a>
+                {note && ` · ${note}`}
+              </p>
+            </div>
+          </div>
+
+          {image && (
+            <figure class="border-edge bg-bg-soft relative aspect-[16/10] p-2.5 max-lg:border-t lg:aspect-[2/1] lg:border-l">
+              <span class="border-key absolute top-1 left-1 z-2 h-3 w-3 border border-r-0 border-b-0" />
+              <span class="border-key absolute top-1 right-1 z-2 h-3 w-3 border border-b-0 border-l-0" />
+              <span class="border-key absolute bottom-1 left-1 z-2 h-3 w-3 border border-t-0 border-r-0" />
+              <span class="border-key absolute right-1 bottom-1 z-2 h-3 w-3 border border-t-0 border-l-0" />
+              <img
+                class="h-full w-full object-cover object-left-top"
+                src={image}
+                alt={`${name} in use`}
+                loading="lazy"
+                width="736"
+                height="483"
+              />
+              <span class="outline-edge pointer-events-none absolute inset-2.5 outline -outline-offset-1" />
+            </figure>
+          )}
+        </article>
+      );
+    })}
+  </div>
+</Section>
