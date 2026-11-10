@@ -1,5 +1,5 @@
 import { defineCollection } from "astro:content";
-import { file } from "astro/loaders";
+import { file, type Loader } from "astro/loaders";
 import { z } from "astro/zod";
 
 // See docs/adr/0001-content-collections-with-derived-contrib-state.md.
@@ -9,10 +9,27 @@ const yearMonth = z
   .string()
   .regex(/^\d{4}-(0[1-9]|1[0-2])$/, "Expected a date as YYYY-MM");
 
+// `file()` only logs when the file is missing, is not valid YAML, or holds an
+// entry with no id, and the build then passes with entries absent. Here every
+// one of those is a broken record, so the first error it logs is thrown.
+function strictFile(fileName: string): Loader {
+  const loader = file(fileName);
+  return {
+    ...loader,
+    load: (context) => {
+      const logger = Object.create(context.logger) as typeof context.logger;
+      logger.error = (message) => {
+        throw new Error(`${fileName}: ${message}`);
+      };
+      return loader.load({ ...context, logger });
+    },
+  };
+}
+
 // Strict objects throughout: a misspelt key such as `ned:` would otherwise be
 // stripped silently and turn a past role into the current one.
 const experience = defineCollection({
-  loader: file("src/content/experience.yaml"),
+  loader: strictFile("src/content/experience.yaml"),
   schema: z
     .strictObject({
       company: z.string().min(1),
@@ -29,9 +46,9 @@ const experience = defineCollection({
 });
 
 const contrib = defineCollection({
-  loader: file("src/content/contrib.yaml"),
-  // No state field: the word shown beside a contrib is derived from
-  // `maintainer` and the pr states, so it cannot contradict its own evidence.
+  loader: strictFile("src/content/contrib.yaml"),
+  // No state field: the contrib state is derived from `maintainer` and the pr
+  // states, so it cannot contradict its own evidence.
   schema: z.strictObject({
     slug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "Expected kebab-case"),
     name: z.string().min(1),
@@ -46,7 +63,7 @@ const contrib = defineCollection({
       .array(
         z.strictObject({
           title: z.string().min(1),
-          url: z.url(),
+          url: z.url({ protocol: /^https$/ }),
           state: z.enum(["open", "merged"]),
         }),
       )

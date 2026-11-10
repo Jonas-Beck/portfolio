@@ -1,5 +1,5 @@
 # One entry per upstream repository; `prs` is the evidence and needs at least
-# one. There is no state field: the card's word is derived from `maintainer`
+# one. There is no state field: the contrib state is derived from `maintainer`
 # and the pr states.
 #
 # policy-reporter and the Backstage events Kafka module are held back until

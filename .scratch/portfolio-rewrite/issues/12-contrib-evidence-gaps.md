@@ -26,3 +26,22 @@ Until the URLs arrive, keep the entries out of `contrib.yaml` rather than
 weakening the schema to let a contrib exist with no evidence. Per `GLOSSARY.md`,
 work with nothing to link is experience — and all three are already described in
 the experience entries, so nothing is lost from the page in the meantime.
+
+## Comments
+
+Two things found while landing issue 04:
+
+- **"Nothing is lost from the page in the meantime" is not quite true.** The only
+  statement that Jonas is a Kyverno *maintainer* was the second baseline About
+  paragraph, which issue 06 trims, and the policy-reporter contrib, which is held
+  back here. The experience entry says only "donated to the official Kyverno CNCF
+  project". Until policy-reporter lands with `maintainer: true`, the site does
+  not say it anywhere.
+- **The held-back entries are not in this repo.** Their `summary`, `note` and
+  `image` have to be re-ported from the baseline's `src/config/index.ts` at
+  `b62d18b` in `astro-zen-portfolio` when the URLs arrive.
+
+Also worth knowing for the cache-server entry: PR #280 was opened by the
+upstream maintainer, taking over Jonas's #257 (closed) with his commits kept.
+#280 is the merged one and credits him in its description, so it stays as the
+evidence link.
