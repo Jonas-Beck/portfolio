@@ -3,15 +3,6 @@
   "version": "0.0.0",
   "private": true,
   "type": "module",
-  "scripts": {
-    "dev": "astro dev",
-    "build": "tsc --noEmit --runExternalCode && astro build",
-    "preview": "astro preview",
-    "check": "tsc --noEmit --runExternalCode",
-    "test": "vitest run",
-    "format": "prettier --write .",
-    "format:check": "prettier --check ."
-  },
   "dependencies": {
     "@fontsource-variable/jetbrains-mono": "^5.3.0",
     "@tailwindcss/vite": "^4.3.5",
@@ -23,7 +14,8 @@
     "prettier": "^3.9.10",
     "prettier-plugin-astro": "^1.1.2",
     "prettier-plugin-tailwindcss": "^0.8.1",
-    "typescript": "7.1.0-beta"
+    "typescript": "7.1.0-beta",
+    "vitest": "^5.1.0"
   },
   "aube": {
     "overrides": {

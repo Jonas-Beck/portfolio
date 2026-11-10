@@ -39,7 +39,7 @@ lives here.
 ├── PRODUCT.md                 product definition (likewise)
 ├── README.md                  written for this repo, no template credit
 ├── LICENSE                    MIT, Jonas Beck
-├── mise.toml                  node, aube, hk
+├── mise.toml                  node, aube, hk — and every task
 ├── hk.pkl
 ├── package.json
 ├── astro.config.mjs
@@ -93,10 +93,28 @@ See the ADR. In short:
 **mise owns what bootstraps the repo** — `node`, `aube`, `hk`. The unused
 `biome` pin in the (still untracked) `mise.toml` is dropped.
 
+**mise also owns every command.** Tasks live in `mise.toml` and are run as
+`mise run <task>`: `dev`, `preview`, `build`, `typecheck`, `test`, `format`,
+`format:check`, and `check`. `package.json` has **no `scripts` block** — a task
+and a script defining the same command is exactly the drift this avoids, so
+there is one definition of each and one way to run it. `mise.toml` puts
+`node_modules/.bin` on `PATH` (`[env] _.path`), so tasks call the installed
+binaries directly rather than through a package manager.
+
+`check` is the gate: it has no command of its own, only
+`depends = ["format:check", "typecheck", "test"]`, which mise runs in parallel.
+The pre-push hook, CI and a human all run that one task, so what must pass is
+defined once. The former `check` script, which was `tsc`, is now `typecheck`.
+
+One caveat while this is being built: until issue 05 lands the first test, `test`
+runs `vitest run --passWithNoTests` and passes vacuously, so the gate is two real
+checks and a placeholder.
+
 **`package.json` owns what the build imports** — `astro`, `typescript`,
 `prettier` and plugins, `vitest`. Installed with `aube`;
 `aube-lock.yaml` is the only lockfile in the repo, and no npm, pnpm or yarn
-lockfile is ever committed.
+lockfile is ever committed. Dependency work stays `aube` (`aube add`,
+`aube install`, `aube ci`); only command-running moved to mise.
 
 ### Formatting and linting
 
@@ -208,15 +226,28 @@ upstream chain stops accepting emnapi prereleases.
 
 ### Hooks
 
-`hk`, pre-push only to start: `aube run format:check` (`prettier --check`),
-`aube run check` (`tsc`), `vitest run`. Check mode, not fix mode — a hook that
-fixes during a push strands the fix outside the commits being pushed.
-`hk fix` stays available manually. A pre-commit fix hook can be attached to the
-same steps later.
+`hk`, pre-push only to start, and the hook is one step: `mise run check`.
+Check mode, not fix mode — a hook that fixes during a push strands the fix
+outside the commits being pushed. `hk fix` runs `mise run format` and stays
+available manually. A pre-commit fix hook can be attached to the same step
+later.
 
-Use the `format:check` script, not `aube run format --check`: script arguments
-are appended, so that expands to `prettier --write . --check` and `--write`
-wins — it rewrites the tree instead of checking it.
+The hook names the `check` task rather than listing the three commands, so
+`hk.pkl` cannot drift from what the gate actually is; adding a fourth thing that
+must pass is a line in `mise.toml` and no change to `hk.pkl`. What hk still owns
+is installing the git hook and nothing else — `hk install --mise` writes a
+`.git/hooks/pre-push` shim that launches through `mise x`, so mise-managed tools
+are on `PATH` without mise being activated in the shell.
+
+`check` and `fix` hooks are declared in `hk.pkl` too, both on the same step.
+Without them `hk check` and `hk fix` would be silent no-ops, because hk only
+creates its three default hooks from a top-level `steps` block and this config
+has none.
+
+Use the `format:check` task, not `mise run format --check`: task arguments are
+appended, so that expands to `prettier --write . --check` and `--write`
+wins — it rewrites the tree instead of checking it, and exits 0 while doing so.
+Verified under mise, not just assumed from the aube behaviour it inherits.
 
 ## Testing
 
@@ -262,7 +293,7 @@ GitHub Pages, static output, `site: "https://jonasbeck.dk"`, no `base`. A switch
 to Cloudflare Pages is possible later and out of scope.
 
 `.github/workflows/deploy.yaml` is written now but nothing is pushed: `mise` →
-`aube ci` → `astro build` → `actions/upload-pages-artifact` →
+`aube ci` → `mise run build` → `actions/upload-pages-artifact` →
 `actions/deploy-pages`. Not `withastro/action`, which detects the package manager
 from the lockfile and does not know `aube`.
 

@@ -2,3 +2,49 @@
 aube = { version = "2.5.1", workflow = ["release-plz.yml@refs/heads/main", "release.yml@refs/heads/main"] }
 hk = "2.11.1"
 node = "26.9.0"
+
+[env]
+# Tasks call the binaries aube installed, so node_modules/.bin has to be on
+# PATH. config_root keeps it anchored to the repo, not the shell's cwd.
+_.path = ["{{config_root}}/node_modules/.bin"]
+
+[tasks.dev]
+description = "Serve the site with hot reload"
+run = "astro dev"
+
+[tasks.preview]
+description = "Serve the built site"
+run = "astro preview"
+
+[tasks.build]
+description = "Type-check, then build to dist/"
+depends = ["typecheck"]
+run = "astro build"
+
+[tasks.typecheck]
+description = "Type-check the project, including .astro frontmatter"
+run = "tsc --noEmit --runExternalCode"
+
+[tasks.test]
+description = "Run the test suite once"
+# --passWithNoTests only until issue 05 lands the first test, since `vitest run`
+# exits 1 when it finds no test files. Drop the flag then.
+run = "vitest run --passWithNoTests"
+
+[tasks.format]
+description = "Format the tree in place"
+run = "prettier --write ."
+
+# A task of its own, never `mise run format --check`: task arguments are
+# appended, so that expands to `prettier --write . --check` — `--write` wins, it
+# rewrites the tree instead of checking it, and it exits 0 while doing so.
+[tasks."format:check"]
+description = "Report formatting problems without writing"
+run = "prettier --check ."
+
+# The gate. This is what the pre-push hook runs and what a human runs before
+# pushing, so there is one definition of what must pass. Dependencies run in
+# parallel; all three only read the tree.
+[tasks.check]
+description = "Everything that must pass before a push"
+depends = ["format:check", "typecheck", "test"]

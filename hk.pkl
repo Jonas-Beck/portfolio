@@ -1,0 +1,43 @@
+amends "package://github.com/jdx/hk/releases/download/v2.11.1/hk@2.11.1#/Config.pkl"
+
+// hk's only job here is the pre-push gate. `mise run check` owns what must pass
+// — it depends on format:check, typecheck and test, and runs them in parallel —
+// so the hook, CI and a human all run the same three things and cannot drift.
+//
+// There is deliberately no pre-commit hook: the typecheck has to see the whole
+// project, so it cannot be scoped to staged files, and seconds on every commit
+// is how `--no-verify` becomes a habit.
+//
+// The step sets no `glob`, so it always runs: `mise run check` is a
+// whole-project command, not a per-file linter.
+local gate = new Step {
+    check = "mise run check"
+    fix = "mise run format"
+}
+
+hooks {
+    // `check` and `fix` are declared so `hk check` and `hk fix` are not silent
+    // no-ops: with no top-level `steps`, hk creates no default hooks at all.
+    ["check"] {
+        steps {
+            ["gate"] = gate
+        }
+    }
+
+    ["fix"] {
+        fix = true
+        steps {
+            ["gate"] = gate
+        }
+    }
+
+    // Check mode, not fix mode: a hook that fixes during a push leaves the fix
+    // stranded outside the commits being pushed. Fixing stays manual, as
+    // `mise run format` or `hk fix`.
+    ["pre-push"] {
+        fix = false
+        steps {
+            ["gate"] = gate
+        }
+    }
+}

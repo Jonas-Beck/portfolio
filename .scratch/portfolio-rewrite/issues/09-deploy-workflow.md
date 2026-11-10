@@ -9,7 +9,7 @@ Blocked by: 01
 1. `actions/checkout`
 2. `jdx/mise-action` — installs node, aube, hk from `mise.toml`/`mise.lock`
 3. `aube ci` — clean install from the frozen lockfile
-4. `aube run build` — `tsc --noEmit --runExternalCode && astro build`
+4. `mise run build` — the `typecheck` task, then `astro build`
 5. `actions/upload-pages-artifact` with `path: dist`
 6. `actions/deploy-pages` in the `github-pages` environment
 

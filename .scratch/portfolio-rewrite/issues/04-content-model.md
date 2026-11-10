@@ -42,5 +42,5 @@ known (see issue 12).
 
 ## Done when
 
-`aube run check` passes, `aube run build` fails loudly if a date is malformed or a
+`mise run typecheck` passes, `mise run build` fails loudly if a date is malformed or a
 contrib has no prs.

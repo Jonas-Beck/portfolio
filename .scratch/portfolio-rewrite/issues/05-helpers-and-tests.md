@@ -39,5 +39,13 @@ logic.
 
 ## Done when
 
-`aube run test` passes and every helper above has at least its empty/absent case
-covered.
+`mise run test` passes, every helper above has at least its empty/absent case
+covered, and `--passWithNoTests` is gone from the `test` task in `mise.toml`.
+
+## Comments
+
+`--passWithNoTests` on the `test` task is issue 03's doing. The pre-push hook
+runs `mise run test`, and `vitest run` exits 1 when it finds no test files, so
+without the flag every push was red before any test existed. Once this issue
+lands real tests the flag only hides an empty suite, which is why removing it is
+in the Done when above.

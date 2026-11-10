@@ -31,5 +31,5 @@ guards rather than loosening the config.
 
 ## Done when
 
-The page renders all three sections, `aube run check` passes, and no component
+The page renders all three sections, `mise run typecheck` passes, and no component
 contains prose that is not from config or a collection.
