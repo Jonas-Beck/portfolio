@@ -1,6 +1,6 @@
 # public/ assets
 
-Status: needs-info
+Status: done
 
 Blocked by: 01
 
@@ -33,8 +33,5 @@ nothing else came across. `check.svg`, `external.svg` and `menu.svg` (the last
 one not named above) have no references and were dropped. `mise run build` is
 clean, and every image path in `dist/index.html` resolves.
 
-Open: `favicon.svg` is the stock Astro logo from `npm create astro`, not
-Jonas's own mark, so carrying it over conflicts with "Done when". Jonas has to
-choose: keep it, ship no favicon (an honest gap, like the unset OG card), or
-make a replacement and track it as its own issue. Once that's decided this is
-done.
+`favicon.svg` is the stock Astro logo from `npm create astro`, not Jonas's own
+mark. Jonas decided to keep it for now, as an accepted exception to "Done when".
