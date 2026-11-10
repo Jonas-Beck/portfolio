@@ -42,20 +42,23 @@ const { contribs } = Astro.props;
             </div>
             <p class="text-fg-dim mt-3 max-w-[52ch] text-base">{summary}</p>
 
-            <ul class="mt-4 flex flex-col gap-1.5 text-sm">
-              {prs.map(({ title, url }) => (
-                <li>
-                  <a
-                    class="text-path hover:underline"
-                    href={url}
-                    target="_blank"
-                    rel="noopener"
-                  >
-                    {title} <External />
-                  </a>
-                </li>
-              ))}
-            </ul>
+            {/* A maintainer contrib may list none: the repo link is its evidence. */}
+            {prs.length > 0 && (
+              <ul data-prs class="mt-4 flex flex-col gap-1.5 text-sm">
+                {prs.map(({ title, url }) => (
+                  <li>
+                    <a
+                      class="text-path hover:underline"
+                      href={url}
+                      target="_blank"
+                      rel="noopener"
+                    >
+                      {title} <External />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
 
             <div class="mt-auto pt-6">
               <hr class="border-edge border-dashed" />

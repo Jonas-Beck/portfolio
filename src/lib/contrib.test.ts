@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { deriveContribState, repoUrl, type PrState } from "./contrib";
+import {
+  deriveContribState,
+  repoUrl,
+  sortContribs,
+  type PrState,
+} from "./contrib";
 
 const pr = (state: PrState) => ({
   title: "a pr",
@@ -19,6 +24,12 @@ describe("deriveContribState", () => {
 
   it("is maintainer when Jonas maintains the repository, whatever the prs say", () => {
     expect(deriveContribState({ maintainer: true, prs: [pr("open")] })).toBe(
+      "maintainer",
+    );
+  });
+
+  it("is maintainer for a maintained repository that lists no prs", () => {
+    expect(deriveContribState({ maintainer: true, prs: [] })).toBe(
       "maintainer",
     );
   });
@@ -50,5 +61,36 @@ describe("repoUrl", () => {
 
   it("refuses an empty repository instead of linking GitHub's front page", () => {
     expect(() => repoUrl("")).toThrow(/owner\/name/);
+  });
+});
+
+describe("sortContribs", () => {
+  const entry = (name: string, maintainer: boolean, states: PrState[]) => ({
+    data: { name, maintainer, prs: states.map(pr) },
+  });
+
+  // Strongest claim first: maintained, then landed, then still in review.
+  it("orders maintainer, then merged, then open", () => {
+    const sorted = sortContribs([
+      entry("open-one", false, ["open"]),
+      entry("merged-one", false, ["merged"]),
+      entry("maintained-one", true, []),
+    ]);
+    expect(sorted.map(({ data }) => data.name)).toEqual([
+      "maintained-one",
+      "merged-one",
+      "open-one",
+    ]);
+  });
+
+  it("orders contribs in the same state by name", () => {
+    const sorted = sortContribs([
+      entry("github-actions-cache-server", false, ["merged"]),
+      entry("backstage events kafka module", false, ["merged", "merged"]),
+    ]);
+    expect(sorted.map(({ data }) => data.name)).toEqual([
+      "backstage events kafka module",
+      "github-actions-cache-server",
+    ]);
   });
 });

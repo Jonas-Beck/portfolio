@@ -18,8 +18,13 @@ current role, replacing display strings like `"Apr 2024"` and the magic value
 `"Agu 2026"` rendered silently. The schema now rejects it at build time, ordering
 is derivable, and formatting moves into a tested helper.
 
+A contrib where Jonas holds the `maintainer` role may list no prs at all: the
+repository he maintains is the evidence, and singling out one pr from dozens
+would undersell the role. Every other contrib still needs at least one pr, and
+the schema enforces both rules.
+
 ## Consequences
 
 The `prs` array is where a reasonable reader would expect a flat `link` field, and
 the absent state field is where they would expect a written one. Both are
-deliberate. Adding a contrib means adding its prs; the card's headline follows.
+deliberate. Adding a contrib means adding its prs, or marking it `maintainer`; the card's headline follows.

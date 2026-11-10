@@ -4,11 +4,11 @@ import Contrib from "../components/Contrib.astro";
 import Experience from "../components/Experience.astro";
 import Whoami from "../components/Whoami.astro";
 import Layout from "../layouts/Layout.astro";
+import { sortContribs } from "../lib/contrib";
 import { sortExperience } from "../lib/experience";
 
 const experience = sortExperience(await getCollection("experience"));
-// File order is the display order Jonas chose.
-const contribs = await getCollection("contrib");
+const contribs = sortContribs(await getCollection("contrib"));
 ---
 
 <Layout>

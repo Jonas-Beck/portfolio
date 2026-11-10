@@ -1,6 +1,6 @@
 # Missing pr URLs for two contribs
 
-Status: needs-info
+Status: done
 
 Blocked by: 04
 
@@ -45,3 +45,19 @@ Also worth knowing for the cache-server entry: PR #280 was opened by the
 upstream maintainer, taking over Jonas's #257 (closed) with his commits kept.
 #280 is the merged one and credits him in its description, so it stays as the
 evidence link.
+
+Done. Both entries are back in `contrib.yaml`, re-ported from the baseline.
+
+- **backstage events kafka module**: both prs supplied by Jonas, both merged,
+  titles as on GitHub.
+- **policy-reporter**: repository `kyverno/backstage-policy-reporter-plugin`,
+  `maintainer: true`, and deliberately no prs. Jonas: it "shouldn't reference a
+  specific PR". The schema now lets a maintainer contrib list none, since the
+  repository is the evidence. GLOSSARY and ADR 0001 are amended to match.
+- **github-actions-cache-server**: the original, closed pr was offered and is
+  not added. The pr states are only `open` and `merged`, and the merged takeover
+  already credits Jonas, as noted above.
+- Building with three entries showed `getCollection` returns them by id, not in
+  file order, so `sortContribs` now derives the order: maintainer, merged,
+  open, then by name. That reproduces the baseline order. If Jonas wants
+  editorial order instead, it needs a stored field.

@@ -76,6 +76,14 @@ describe("Contrib", () => {
     expect(html).toContain('data-contrib-state="maintainer"');
   });
 
+  // A maintained repository is its own evidence, so it may list no prs.
+  it("renders a maintainer contrib with no prs without a pr list", async () => {
+    const html = await render([contrib({ maintainer: true, prs: [] })]);
+    expect(html).toContain('data-contrib-state="maintainer"');
+    expect(html).toContain('href="https://github.com/backstage/backstage"');
+    expect(html).not.toContain("data-prs");
+  });
+
   it("links the upstream repository", async () => {
     const html = await render([contrib({})]);
     expect(html).toContain('href="https://github.com/backstage/backstage"');
@@ -104,6 +112,7 @@ describe("Contrib", () => {
     expect(html).toContain(
       'href="https://github.com/backstage/backstage/pull/2"',
     );
+    expect(html).toContain("data-prs");
     expect(html.match(/<a [^>]*href="[^"]*\/pull\/\d+"/g)).toHaveLength(2);
   });
 });

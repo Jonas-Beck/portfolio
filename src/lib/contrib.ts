@@ -13,10 +13,31 @@ export function deriveContribState({
   prs,
 }: Pick<ContribData, "maintainer" | "prs">): ContribState {
   if (maintainer) return "maintainer";
-  // The schema requires a pr, but `every` is vacuously true on an empty list
-  // and would report unevidenced work as merged.
+  // Only a maintainer contrib may list no prs, and that returned above. Past
+  // here `every` would be vacuously true on an empty list and report
+  // unevidenced work as merged.
   if (prs.length === 0) throw new Error("A contrib with no prs has no state");
   return prs.every((pr) => pr.state === "merged") ? "merged" : "open";
+}
+
+const STATE_RANK: Record<ContribState, number> = {
+  maintainer: 0,
+  merged: 1,
+  open: 2,
+};
+
+// Strongest claim first, then by name. `getCollection` returns entries by id,
+// not in file order, so the order has to be derived. Plain comparison rather
+// than localeCompare, so the order does not depend on the build machine.
+export function sortContribs<
+  Entry extends { data: Pick<ContribData, "name" | "maintainer" | "prs"> },
+>(entries: readonly Entry[]): Entry[] {
+  const rank = ({ data }: Entry) => STATE_RANK[deriveContribState(data)];
+  return entries.toSorted(
+    (a, b) =>
+      rank(a) - rank(b) ||
+      (a.data.name < b.data.name ? -1 : a.data.name > b.data.name ? 1 : 0),
+  );
 }
 
 // owner/name. Shared with the schema in src/content.config.ts.

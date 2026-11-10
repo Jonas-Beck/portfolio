@@ -29,7 +29,9 @@ _Avoid_: project, upstream, open-source, portfolio piece
 
 **pr**:
 One pull request within a contrib. A contrib's `prs` list is the evidence that
-the work is real and public.
+the work is real and public, except where Jonas maintains the repository: there
+the repository itself is the evidence, and the contrib may list no prs, because one
+pr out of many would undersell the role.
 _Avoid_: change, contribution, commit, link
 
 **contrib state**:
@@ -53,7 +55,8 @@ _Avoid_: dark mode, colour mode, skin, palette
 
 ## The boundary that matters
 
-Work is a **contrib** only if a visitor can open a **pr** and read it. Everything
+Work is a **contrib** only if a visitor can open a **pr** and read it, or open
+the repository Jonas maintains. Everything
 else is **experience**, however substantial. Jonas's internal VELUX tooling (the
 Bura CLI, the `helms-deep` golden-path chart, the self-hosted Actions runners) is
 experience and must never be presented as a contrib.

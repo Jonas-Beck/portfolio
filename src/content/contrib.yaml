@@ -1,10 +1,28 @@
-# One entry per upstream repository; `prs` is the evidence and needs at least
-# one. There is no state field: the contrib state is derived from `maintainer`
-# and the pr states.
-#
-# policy-reporter and the Backstage events Kafka module are held back until
-# their pr URLs are known (.scratch/portfolio-rewrite/issues/12). Both are
-# described under experience in the meantime.
+# One entry per upstream repository. There is no state field: the contrib state
+# is derived from `maintainer` and the pr states. `prs` is the evidence and needs
+# at least one, except where Jonas maintains the repository: then the repository
+# is the evidence and `prs` may be left out.
+
+- slug: policy-reporter
+  name: policy-reporter
+  repo: kyverno/backstage-policy-reporter-plugin
+  summary: Backstage plugin for displaying policy reports from tools like Kyverno, Trivy and Falco
+  note: donated to the Kyverno CNCF project
+  image: /policy-reporter.png
+  maintainer: true
+
+- slug: backstage-events-kafka
+  name: backstage events kafka module
+  repo: backstage/backstage
+  summary: Module for Backstage's events plugin that subscribes to Kafka topics and exposes them through the internal event service, and publishes events back to Kafka
+  note: contributed upstream
+  prs:
+    - title: "feat(events): add a new kafka module for events backend"
+      url: https://github.com/backstage/backstage/pull/29315
+      state: merged
+    - title: "feat(events): add support for publishing to kafka and multiple instances"
+      url: https://github.com/backstage/backstage/pull/32078
+      state: merged
 
 - slug: github-actions-cache-server
   name: github-actions-cache-server

@@ -51,24 +51,34 @@ const contrib = defineCollection({
   loader: strictFile("src/content/contrib.yaml"),
   // No state field: the contrib state is derived from `maintainer` and the pr
   // states, so it cannot contradict its own evidence.
-  schema: z.strictObject({
-    slug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "Expected kebab-case"),
-    name: z.string().min(1),
-    repo: z.string().regex(REPO_PATTERN, "Expected a repository as owner/name"),
-    summary: z.string().min(1),
-    note: z.string().min(1).optional(),
-    image: z.string().min(1).optional(),
-    maintainer: z.boolean().default(false),
-    prs: z
-      .array(
-        z.strictObject({
-          title: z.string().min(1),
-          url: z.url({ protocol: /^https$/ }),
-          state: z.enum(["open", "merged"]),
-        }),
-      )
-      .min(1, "A contrib needs at least one pr as evidence"),
-  }),
+  schema: z
+    .strictObject({
+      slug: z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, "Expected kebab-case"),
+      name: z.string().min(1),
+      repo: z
+        .string()
+        .regex(REPO_PATTERN, "Expected a repository as owner/name"),
+      summary: z.string().min(1),
+      note: z.string().min(1).optional(),
+      image: z.string().min(1).optional(),
+      maintainer: z.boolean().default(false),
+      prs: z
+        .array(
+          z.strictObject({
+            title: z.string().min(1),
+            url: z.url({ protocol: /^https$/ }),
+            state: z.enum(["open", "merged"]),
+          }),
+        )
+        .default([]),
+    })
+    // The evidence is a pr a visitor can open, or, where Jonas maintains the
+    // repository, the repository itself: one pr out of many would undersell it.
+    .refine(({ maintainer, prs }) => maintainer || prs.length > 0, {
+      message:
+        "A contrib needs at least one pr as evidence unless Jonas maintains the repository",
+      path: ["prs"],
+    }),
 });
 
 export const collections = { experience, contrib };
