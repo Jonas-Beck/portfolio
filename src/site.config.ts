@@ -28,7 +28,6 @@ interface SiteConfig {
   canonicalURL: string;
   /** Unset until there is a card of Jonas's own; the layout then omits the tags. */
   socialImage: string | undefined;
-  siteLogo: string;
   email: string;
   /** user@host shown in the header status bar and the footer prompt. */
   shellPrompt: string;
@@ -38,8 +37,6 @@ interface SiteConfig {
     name: string;
     title: string;
     summary: string;
-    lede: string;
-    portrait: string;
   };
 }
 
@@ -51,7 +48,6 @@ export const SITE: SiteConfig = {
   lang: "en",
   canonicalURL: "https://jonasbeck.dk",
   socialImage: undefined,
-  siteLogo: "/jonas-small.jpg",
   email: "contact@jonasbeck.dk",
   shellPrompt: "jonas@jonasbeck.dk",
   navLinks: [
@@ -68,8 +64,6 @@ export const SITE: SiteConfig = {
     name: "Jonas Beck",
     title: "Platform Engineer",
     summary:
-      "Platform Engineer based in Denmark. Working to improve developer experience through IDP Backstage and building internal tooling.",
-    lede: "Hi, I'm Jonas Beck, a passionate Platform Engineer with a focus on enhancing developer experience and building internal tooling, with experience in platform engineering and Kubernetes.",
-    portrait: "/jonas-big.jpg",
+      "Based in Denmark. I improve developer experience through Backstage and internal tooling, and work hands-on with Kubernetes.",
   },
 };

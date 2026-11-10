@@ -12,7 +12,7 @@ The page has exactly three sections. Each section's name, its anchor id and its
 nav label are the same word.
 
 **whoami**:
-The opening section: name, title, one-line summary, portrait and contact.
+The opening section: name, title, one-line summary and contact.
 _Avoid_: hero, about, intro, landing
 
 **experience**:
