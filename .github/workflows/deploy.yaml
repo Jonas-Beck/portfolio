@@ -1,0 +1,59 @@
+# Builds the site and publishes it to GitHub Pages.
+#
+# Not `withastro/action`: it picks the package manager from the lockfile and
+# does not know `aube`, so it cannot install from `aube-lock.yaml`. The steps
+# below are what it would do, with mise supplying the toolchain instead.
+#
+# Unverified against a real run until the cutover (issue 10): this repository
+# is not pushed and Pages is not enabled on it.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  # deploy-pages proves the run's identity to Pages with an OIDC token.
+  id-token: write
+
+# One deploy at a time, and a running one is never cancelled: a half-finished
+# Pages deployment is worse than a queued one.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+
+      # Installs node, aube and hk at the versions in mise.toml. With mise.lock
+      # present the action adds `--locked`, so CI gets the checksummed binaries
+      # a laptop gets.
+      - uses: jdx/mise-action@v5
+
+      - name: Install dependencies
+        run: aube ci
+
+      # The `build` task depends on `typecheck`, so a type error fails the
+      # deploy here rather than publishing a site built from broken code.
+      - name: Build
+        run: mise run build
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
