@@ -30,8 +30,7 @@ run — see issue 10.
 ## Notes
 
 From the implementation: the file parses and passes `actionlint`. Actions are
-pinned to the current major tags (`checkout@v7`, `mise-action@v5`,
-`upload-pages-artifact@v5`, `deploy-pages@v5`), not commit SHAs.
+pinned to commit SHAs, with the release tag in a trailing comment.
 
 Two departures from the step list above, both from review:
 
