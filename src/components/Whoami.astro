@@ -2,11 +2,9 @@
 import { SITE, type SectionId } from "../site.config";
 import External from "./icons/External.astro";
 
-// The baseline's Hero and About. Its rail panels and About's second paragraph
-// restated experience and contrib, which have sections of their own, so only
-// who and how to reach him remain here. The title line names the role, so the
-// summary does not repeat it, and the name in display type stands in for a
-// portrait.
+// Who and how to reach him, nothing more: experience and contrib have sections
+// of their own. The title line names the role, so the summary does not repeat
+// it, and the name in display type stands in for a portrait.
 const id: SectionId = "whoami";
 const { email, socialLinks } = SITE;
 const { name, title, summary } = SITE.whoami;

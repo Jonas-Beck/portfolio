@@ -10,6 +10,3 @@ skills-lock.json
 # Vendored agent skills — third-party files this repo does not own
 .agents/
 .claude/
-
-# Issue tracker — hand-written working notes, not formatter-governed
-.scratch/

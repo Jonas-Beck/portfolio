@@ -3,9 +3,6 @@
 # Not `withastro/action`: it picks the package manager from the lockfile and
 # does not know `aube`, so it cannot install from `aube-lock.yaml`. The steps
 # below are what it would do, with mise supplying the toolchain instead.
-#
-# Unverified against a real run until the cutover (issue 10): this repository
-# is not pushed and Pages is not enabled on it.
 name: Deploy
 
 on:
