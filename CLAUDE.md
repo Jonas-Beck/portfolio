@@ -4,7 +4,7 @@
 
 ### Issue tracker
 
-Issues live as markdown files under `.scratch/<feature>/` in this repo. See `docs/agents/issue-tracker.md`.
+Issues live as markdown files under `.scratch/<feature>/`, which is gitignored: never commit them. See `docs/agents/issue-tracker.md`.
 
 ### Triage labels
 

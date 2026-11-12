@@ -154,3 +154,6 @@ vite.config.ts.timestamp-*
 # Impeccable local runtime state
 .impeccable/config.local.json
 .impeccable/hook.cache.json
+
+# Issue tracker: local working notes, never committed
+.scratch/

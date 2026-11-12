@@ -2,6 +2,10 @@
 
 Issues and specs for this repo live as markdown files in `.scratch/`.
 
+`.scratch/` is gitignored: specs and tickets are local working notes and are
+never committed. Anything that must outlive them (a decision, a convention, a
+non-obvious constraint) goes into `docs/adr/`, `GLOSSARY.md` or a code comment.
+
 ## Conventions
 
 - One feature per directory: `.scratch/<feature-slug>/`
