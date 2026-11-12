@@ -13,11 +13,9 @@ on:
     branches: [main]
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  # deploy-pages proves the run's identity to Pages with an OIDC token.
-  id-token: write
+# Nothing by default; each job asks for what it needs. `build` runs third-party
+# install scripts, so it never holds the Pages or OIDC permissions.
+permissions: {}
 
 # One deploy at a time, and a running one is never cancelled: a half-finished
 # Pages deployment is worse than a queued one.
@@ -28,6 +26,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v7
 
@@ -39,8 +39,11 @@ jobs:
       - name: Install dependencies
         run: aube ci
 
-      # The `build` task depends on `typecheck`, so a type error fails the
-      # deploy here rather than publishing a site built from broken code.
+      # The same gate the pre-push hook runs (see hk.pkl). A push that skipped
+      # the hook (`--no-verify`, the web editor) still cannot deploy past it.
+      - name: Check
+        run: mise run check
+
       - name: Build
         run: mise run build
 
@@ -51,6 +54,10 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      # deploy-pages proves the run's identity to Pages with an OIDC token.
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

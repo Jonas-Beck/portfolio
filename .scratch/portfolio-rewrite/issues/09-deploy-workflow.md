@@ -1,6 +1,6 @@
 # GitHub Pages deploy workflow (written, not pushed)
 
-Status: ready-for-agent
+Status: done
 
 Blocked by: 01
 
@@ -26,3 +26,22 @@ now beats reconstructing why `withastro/action` does not fit.
 
 The file exists and is valid YAML. It is deliberately unverified against a real
 run — see issue 10.
+
+## Notes
+
+From the implementation: the file parses and passes `actionlint`. Actions are
+pinned to the current major tags (`checkout@v7`, `mise-action@v5`,
+`upload-pages-artifact@v5`, `deploy-pages@v5`), not commit SHAs.
+
+Two departures from the step list above, both from review:
+
+- A `mise run check` step runs before `mise run build`. `hk.pkl` and the spec
+  both say CI runs the same gate as the pre-push hook; with only `build`, a push
+  that skipped the hook could deploy with failing tests. `typecheck` now runs
+  twice, which costs under a second.
+- Permissions are per job, not workflow-wide: `build` holds only
+  `contents: read`, since it runs third-party install scripts, and `deploy`
+  holds `pages: write` and `id-token: write`.
+
+Also added: a `pages` concurrency group that never cancels a running deploy, and
+the environment `url` from `deploy-pages`, as in GitHub's starter workflow.
