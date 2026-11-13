@@ -19,14 +19,14 @@ const { contribs } = Astro.props;
       return (
         <article
           class:list={[
-            "border-edge bg-bg-alt grid border",
+            "border-edge bg-bg-alt grid grid-cols-[minmax(0,1fr)] border",
             image &&
               "lg:grid-cols-[minmax(0,1fr)_26rem] xl:grid-cols-[minmax(0,1fr)_32rem]",
           ]}
         >
-          <div class="flex flex-col p-7">
+          <div class="flex min-w-0 flex-col p-5 sm:p-7">
             <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1.5">
-              <h3 class="text-accent tracking-display text-3xl font-extrabold">
+              <h3 class="text-accent tracking-display text-2xl font-extrabold wrap-anywhere sm:text-3xl">
                 {name}
               </h3>
               {/* Green is live state only, and an open pr is not yet live. */}
@@ -48,7 +48,7 @@ const { contribs } = Astro.props;
                 {prs.map(({ title, url }) => (
                   <li>
                     <a
-                      class="text-path hover:underline"
+                      class="text-path wrap-anywhere hover:underline"
                       href={url}
                       target="_blank"
                       rel="noopener"
@@ -62,7 +62,7 @@ const { contribs } = Astro.props;
 
             <div class="mt-auto pt-6">
               <hr class="border-edge border-dashed" />
-              <p class="text-fg-dim mt-3.5 text-xs">
+              <p class="text-fg-dim mt-3.5 text-xs wrap-anywhere">
                 <a
                   class="text-path hover:underline"
                   href={repoUrl(repo)}
@@ -77,18 +77,18 @@ const { contribs } = Astro.props;
           </div>
 
           {image && (
-            <figure class="border-edge bg-bg-soft relative aspect-[16/10] p-2.5 max-lg:border-t lg:aspect-[2/1] lg:border-l">
+            <figure class="border-edge bg-bg-soft relative aspect-[16/10] min-w-0 overflow-hidden p-2.5 max-lg:border-t lg:aspect-[2/1] lg:border-l">
               <span class="border-key absolute top-1 left-1 z-2 h-3 w-3 border border-r-0 border-b-0" />
               <span class="border-key absolute top-1 right-1 z-2 h-3 w-3 border border-b-0 border-l-0" />
               <span class="border-key absolute bottom-1 left-1 z-2 h-3 w-3 border border-t-0 border-r-0" />
               <span class="border-key absolute right-1 bottom-1 z-2 h-3 w-3 border border-t-0 border-l-0" />
               <img
-                class="h-full w-full object-cover object-left-top"
+                class="block h-full w-full max-w-full object-cover object-left-top"
                 src={image}
                 alt={`${name} in use`}
                 loading="lazy"
-                width="736"
-                height="483"
+                width="687"
+                height="581"
               />
               <span class="outline-edge pointer-events-none absolute inset-2.5 outline -outline-offset-1" />
             </figure>
