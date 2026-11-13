@@ -21,8 +21,15 @@ description = "Type-check, then build to dist/"
 depends = ["typecheck"]
 run = "astro build"
 
+# astro:content's types live in the gitignored .astro/, so a fresh checkout
+# (CI) has none until they are generated.
+[tasks.sync]
+description = "Generate Astro's types into .astro/"
+run = "astro sync"
+
 [tasks.typecheck]
 description = "Type-check the project, including .astro frontmatter"
+depends = ["sync"]
 run = "tsc --noEmit --runExternalCode"
 
 [tasks.test]
