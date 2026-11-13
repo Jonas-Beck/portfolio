@@ -11,22 +11,34 @@ const { navLinks, shellPrompt } = SITE;
   skip to content
 </a>
 
-<header id="chrome" class="border-edge bg-bg sticky top-0 z-50 border-b">
-  <div class="border-edge bg-bg-alt text-fg-dim border-b text-xs">
+<!-- On a phone the prompt bar scrolls away and only the nav stays pinned: the
+     negative top parks the bar above the viewport. Without the script's
+     --bar-h the whole header pins, as on desktop. -->
+<header
+  id="chrome"
+  class="border-edge bg-bg sticky top-0 z-50 border-b max-sm:top-[calc(-1*var(--bar-h,0px))]"
+>
+  <div id="bar" class="border-edge bg-bg-alt text-fg-dim border-b text-xs">
     <div class="mx-auto flex max-w-[82rem] flex-wrap items-center justify-between gap-x-4 gap-y-2 px-5 py-2.5">
       <span class="text-key">
         <span class="font-bold">{shellPrompt}</span>
         <span class="text-path">:~</span>
         <span class="text-path" id="cwd"></span>$
       </span>
-      <div class="flex items-center gap-2" role="group" aria-label="Theme">
-        <span>theme:</span>
+      <div
+        class="flex flex-wrap items-center gap-2 max-sm:gap-1.5"
+        role="group"
+        aria-label="Theme"
+      >
+        {/* The group's aria-label names it; on a phone the visible label costs
+            the buttons their single row. */}
+        <span class="max-sm:hidden">theme:</span>
         {THEMES.map(({ id, label }) => (
           <button
             type="button"
             data-theme-set={id}
             aria-pressed={id === DEFAULT_THEME}
-            class="border-fg-dim text-fg-dim hover:text-fg hover:border-fg aria-pressed:border-key aria-pressed:bg-key aria-pressed:text-bg cursor-pointer border px-2 py-0.5 text-xs"
+            class="border-fg-dim text-fg-dim hover:text-fg hover:border-fg aria-pressed:border-key aria-pressed:bg-key aria-pressed:text-bg pointer-coarse:py-1 cursor-pointer border px-2 py-0.5 text-xs whitespace-nowrap"
           >
             {label}
           </button>
@@ -36,12 +48,12 @@ const { navLinks, shellPrompt } = SITE;
   </div>
 
   <nav
-    class="mx-auto flex max-w-[82rem] flex-wrap items-center gap-x-7 gap-y-1 px-5 py-2"
+    class="pointer-coarse:py-0 mx-auto flex max-w-[82rem] items-center gap-x-7 gap-y-1 overflow-x-auto px-5 py-2 max-sm:gap-x-3.5 sm:flex-wrap"
     aria-label="Sections"
   >
     {navLinks.map(({ label, href }, i) => (
       <a
-        class="nav-item text-fg-dim hover:text-fg aria-[current=true]:text-key text-sm"
+        class="nav-item text-fg-dim hover:text-fg aria-[current=true]:text-key pointer-coarse:min-h-11 inline-flex shrink-0 items-center text-sm whitespace-nowrap"
         href={href}
         accesskey={String(i + 1)}
         aria-current="false"
@@ -89,14 +101,16 @@ const { navLinks, shellPrompt } = SITE;
   // it back.
   showTheme(resolveTheme(root.dataset["theme"]));
 
-  // Anchors must clear the real chrome, which changes height when it wraps.
+  // Anchors must clear the pinned part of the chrome, which changes height
+  // when it wraps. The script only measures; global.css decides how much of
+  // the chrome is pinned at each width, from these two heights.
   const chrome = document.querySelector<HTMLElement>("#chrome");
-  const setScrollPadding = () => {
-    if (!chrome) return;
-    root.style.scrollPaddingTop = `${chrome.offsetHeight + 16}px`;
-  };
-  setScrollPadding();
-  addEventListener("resize", setScrollPadding, { passive: true });
+  const bar = document.querySelector<HTMLElement>("#bar");
+  if (chrome && bar)
+    new ResizeObserver(() => {
+      root.style.setProperty("--chrome-h", `${chrome.offsetHeight}px`);
+      root.style.setProperty("--bar-h", `${bar.offsetHeight}px`);
+    }).observe(chrome);
 
   // Active section. A 0.5 threshold never fires on sections taller than the
   // viewport, so track whichever section crosses the upper band instead.

@@ -96,6 +96,18 @@
   --t-accent: #ff9e64;
 }
 
+/* Anchors clear the pinned chrome. Header.astro publishes its heights; on a
+   phone the prompt bar scrolls away (the header's negative top), so only
+   the nav below it is pinned. */
+html {
+  scroll-padding-top: calc(var(--chrome-h, 0px) + 1rem);
+}
+@media (width < 40rem) {
+  html {
+    scroll-padding-top: calc(var(--chrome-h, 0px) - var(--bar-h, 0px) + 1rem);
+  }
+}
+
 /* Browser surfaces belong to the design system too. */
 html {
   color-scheme: dark;
