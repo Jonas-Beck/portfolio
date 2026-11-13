@@ -4,7 +4,7 @@
 # is the evidence and `prs` may be left out.
 
 - slug: policy-reporter
-  name: policy-reporter
+  name: backstage-policy-reporter-plugin
   repo: kyverno/backstage-policy-reporter-plugin
   summary: Backstage plugin for displaying policy reports from tools like Kyverno, Trivy and Falco
   note: donated to the Kyverno CNCF project
@@ -12,7 +12,7 @@
   maintainer: true
 
 - slug: backstage-events-kafka
-  name: backstage events kafka module
+  name: "@backstage/events-backend-module-kafka"
   repo: backstage/backstage
   summary: Module for Backstage's events plugin that subscribes to Kafka topics and exposes them through the internal event service, and publishes events back to Kafka
   note: contributed upstream
